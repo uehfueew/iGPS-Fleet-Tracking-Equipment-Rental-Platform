@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { authMiddleware } from '../middleware/auth';
+import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -19,7 +19,7 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 // GET /api/reports/vehicles
-router.get('/vehicles', authMiddleware, async (req, res) => {
+router.get('/vehicles', authenticateToken, async (req, res) => {
   try {
     const { startDate, endDate, period } = req.query;
     

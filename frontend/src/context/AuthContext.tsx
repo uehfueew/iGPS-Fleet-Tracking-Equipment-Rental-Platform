@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { createContext, useState, useEffect } from 'react';
+import api from '../services/api';
 
 export interface User {
   id: number;
@@ -32,20 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
-      // Fetch user profile
-      fetch('/api/auth/me', {
-        headers: {
-          'Authorization': `Bearer ${storedToken}`,
-        },
-      })
+      api.get('/auth/me')
         .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          throw new Error('Invalid token');
-        })
-        .then(userData => {
-          setUser(userData);
+          setUser(res.data);
         })
         .catch(() => {
           localStorage.removeItem('token');

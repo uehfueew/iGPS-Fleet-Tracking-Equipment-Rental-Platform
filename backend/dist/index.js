@@ -19,6 +19,7 @@ const rentals_1 = __importDefault(require("./routes/rentals"));
 const geofences_1 = __importDefault(require("./routes/geofences"));
 const alerts_1 = __importDefault(require("./routes/alerts"));
 const billing_1 = __importDefault(require("./routes/billing"));
+const reports_1 = __importDefault(require("./routes/reports"));
 const auth_2 = require("./middleware/auth");
 const geo_1 = require("./utils/geo");
 const zod_1 = require("zod");
@@ -60,6 +61,7 @@ app.use('/api/equipment', equipment_1.default);
 app.use('/api/rentals', rentals_1.default);
 app.use('/api/geofences', geofences_1.default);
 app.use('/api/alerts', alerts_1.default);
+app.use("/api/reports", reports_1.default);
 app.use('/api/billing', billing_1.default);
 // Health check
 app.get('/api/health', (req, res) => {
@@ -117,8 +119,9 @@ app.post('/api/positions', async (req, res) => {
     try {
         const timestamp = new Date();
         // Use tsPool for TimescaleDB
-        const result = await db_1.tsPool.query('INSERT INTO "Position" ("vehicleId", latitude, longitude, speed, timestamp) VALUES ($1, $2, $3, $4, $5) RETURNING *', [vehicleId, latitude, longitude, speed, timestamp]);
-        const position = result.rows[0];
+        const position = await db_1.prisma.position.create({
+            data: { vehicleId, latitude, longitude, speed, timestamp }
+        });
         // Emit new position to socket connected clients
         io.emit('new-position', {
             vehicleId: position.vehicleId,
@@ -163,19 +166,19 @@ app.get('/api/vehicles/:id/positions', auth_2.authenticateToken, async (req, res
     const { id } = req.params;
     const { from, to } = req.query;
     try {
-        let query = 'SELECT * FROM "Position" WHERE "vehicleId" = $1';
-        const params = [parseInt(id)];
-        if (from) {
-            params.push(new Date(from));
-            query += ` AND timestamp >= $${params.length}`;
+        const where = { vehicleId: parseInt(id) };
+        if (from || to) {
+            where.timestamp = {};
+            if (from)
+                where.timestamp.gte = new Date(from);
+            if (to)
+                where.timestamp.lte = new Date(to);
         }
-        if (to) {
-            params.push(new Date(to));
-            query += ` AND timestamp <= $${params.length}`;
-        }
-        query += ' ORDER BY timestamp ASC';
-        const result = await db_1.tsPool.query(query, params);
-        res.json(result.rows);
+        const positions = await db_1.prisma.position.findMany({
+            where,
+            orderBy: { timestamp: 'asc' }
+        });
+        res.json(positions);
     }
     catch (err) {
         res.status(500).json({ error: err.message });
@@ -185,19 +188,18 @@ app.get('/api/vehicles/:id/positions/export', auth_2.authenticateToken, async (r
     const { id } = req.params;
     const { from, to } = req.query;
     try {
-        let query = 'SELECT * FROM "Position" WHERE "vehicleId" = $1';
-        const params = [parseInt(id)];
-        if (from) {
-            params.push(new Date(from));
-            query += ` AND timestamp >= $${params.length}`;
+        const where = { vehicleId: parseInt(id) };
+        if (from || to) {
+            where.timestamp = {};
+            if (from)
+                where.timestamp.gte = new Date(from);
+            if (to)
+                where.timestamp.lte = new Date(to);
         }
-        if (to) {
-            params.push(new Date(to));
-            query += ` AND timestamp <= $${params.length}`;
-        }
-        query += ' ORDER BY timestamp ASC';
-        const result = await db_1.tsPool.query(query, params);
-        const positions = result.rows;
+        const positions = await db_1.prisma.position.findMany({
+            where,
+            orderBy: { timestamp: 'asc' }
+        });
         const fields = ['id', 'vehicleId', 'latitude', 'longitude', 'speed', 'timestamp'];
         const json2csvParser = new json2csv_1.Parser({ fields });
         const csv = json2csvParser.parse(positions);
@@ -213,8 +215,11 @@ app.get('/api/vehicles/:id/positions/export', auth_2.authenticateToken, async (r
 app.get('/api/vehicles/:id/latest-position', auth_2.authenticateToken, async (req, res) => {
     const id = parseInt(req.params.id);
     try {
-        const result = await db_1.tsPool.query('SELECT * FROM "Position" WHERE "vehicleId" = $1 ORDER BY timestamp DESC LIMIT 1', [id]);
-        res.json(result.rows[0] || null);
+        const position = await db_1.prisma.position.findFirst({
+            where: { vehicleId: id },
+            orderBy: { timestamp: 'desc' }
+        });
+        res.json(position || null);
     }
     catch (err) {
         res.status(500).json({ error: err.message });

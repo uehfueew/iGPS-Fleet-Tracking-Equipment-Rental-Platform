@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { Navigation, Lock, User, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 
@@ -17,19 +18,12 @@ const Register = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, role }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+      const res = await api.post('/auth/register', { username, password, role });
+      const data = res.data;
       login(data.token, data.user);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.response?.data?.error || err.message);
     } finally {
       setLoading(false);
     }
