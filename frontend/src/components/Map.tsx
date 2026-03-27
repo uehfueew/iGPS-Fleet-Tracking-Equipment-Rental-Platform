@@ -21,6 +21,9 @@ interface Vehicle {
 interface Position {
   latitude: number;
   longitude: number;
+  timestamp?: string;
+  fuelLevel?: number;
+  heading?: number;
 }
 
 const Map = () => {
@@ -111,7 +114,7 @@ const Map = () => {
         } else {
           // Create new marker
           const marker = L.marker([pos.latitude, pos.longitude]).addTo(map);
-          marker.bindPopup(`<b>${vehicle.name}</b><br/>${vehicle.licensePlate}`);
+          marker.bindPopup(`<b>${vehicle.name}</b><br/>${vehicle.licensePlate}<br/><br/><b>Fuel Level:</b> ${pos.fuelLevel ? typeof pos.fuelLevel === 'number' ? pos.fuelLevel.toFixed(1) + ' L' : pos.fuelLevel : 'N/A'}<br/><b>Direction:</b> ${pos.heading ? Math.round(pos.heading) + '°' : 'N/A'}`);
           markersRef.current[vehicle.id] = marker;
         }
       }

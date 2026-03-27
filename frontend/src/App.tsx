@@ -9,6 +9,7 @@ import VehicleHistory from './pages/VehicleHistory';
 import AdminGeofences from './pages/AdminGeofences';
 import Alerts from './pages/Alerts';
 import Dashboard from './pages/Dashboard';
+import Reports from './pages/Reports';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthContext } from './context/AuthContext';
 import { Navigation, LogOut, Map as MapIcon, Calendar, Bell, Shield, Activity, BarChart3, HardHat } from 'lucide-react';
@@ -104,6 +105,7 @@ function App() {
             <Route path="/admin/rentals" element={<AdminRentals />} />
             <Route path="/admin/geofences" element={<AdminGeofences />} />
             <Route path="/history" element={<VehicleHistory />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="/" element={<Map />} />
             <Route path="/equipment" element={<EquipmentList />} />
           </Route>

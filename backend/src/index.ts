@@ -15,6 +15,7 @@ import rentalsRouter from './routes/rentals';
 import geofencesRouter from './routes/geofences';
 import alertsRouter from './routes/alerts';
 import billingRouter from './routes/billing';
+import reportsRouter from "./routes/reports";
 import { authenticateToken, requireRole } from './middleware/auth';
 import { isPointInPolygon } from './utils/geo';
 import { z } from 'zod';
@@ -66,6 +67,7 @@ app.use('/api/equipment', equipmentRouter);
 app.use('/api/rentals', rentalsRouter);
 app.use('/api/geofences', geofencesRouter);
 app.use('/api/alerts', alertsRouter);
+app.use("/api/reports", reportsRouter);
 app.use('/api/billing', billingRouter);
 
 // Health check

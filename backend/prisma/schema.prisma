@@ -56,6 +56,8 @@ model Position {
   latitude  Float
   longitude Float
   speed     Float?
+  heading   Float?
+  fuelLevel Float?
   timestamp DateTime @default(now())
   // TimescaleDB will handle this time‑series data, but we keep it in PostgreSQL for now
 }
