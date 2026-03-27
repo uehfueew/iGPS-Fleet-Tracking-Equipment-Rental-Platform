@@ -11,11 +11,11 @@ model User {
   id           Int           @id @default(autoincrement())
   username     String        @unique
   password     String
-  role         String // "admin" or "client"
-  rentals      Rental[]
-  subscription Subscription?
+  role         String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  rentals      Rental[]
+  subscription Subscription?
 }
 
 model Plan {
@@ -29,37 +29,36 @@ model Plan {
 model Subscription {
   id          Int      @id @default(autoincrement())
   userId      Int      @unique
-  user        User     @relation(fields: [userId], references: [id])
   planId      Int
-  plan        Plan     @relation(fields: [planId], references: [id])
-  status      String // "active", "past_due", "canceled"
+  status      String
   stripeSubId String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  plan        Plan     @relation(fields: [planId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 }
 
 model Vehicle {
   id           Int        @id @default(autoincrement())
   name         String
   licensePlate String     @unique
-  deviceId     String? // optional, for GPS device
-  positions    Position[]
-  alerts       Alert[]
+  deviceId     String?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  alerts       Alert[]
+  positions    Position[]
 }
 
 model Position {
   id        Int      @id @default(autoincrement())
   vehicleId Int
-  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
   latitude  Float
   longitude Float
   speed     Float?
   heading   Float?
   fuelLevel Float?
   timestamp DateTime @default(now())
-  // TimescaleDB will handle this time‑series data, but we keep it in PostgreSQL for now
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
 }
 
 model Equipment {
@@ -68,28 +67,28 @@ model Equipment {
   description String?
   pricePerDay Float
   available   Boolean  @default(true)
-  rentals     Rental[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  rentals     Rental[]
 }
 
 model Rental {
   id          Int       @id @default(autoincrement())
   equipmentId Int
-  equipment   Equipment @relation(fields: [equipmentId], references: [id])
   clientId    Int
-  client      User      @relation(fields: [clientId], references: [id])
   startDate   DateTime
   endDate     DateTime
-  status      String // "pending", "approved", "declined", "active", "completed"
+  status      String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  client      User      @relation(fields: [clientId], references: [id])
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
 }
 
 model Geofence {
   id        Int      @id @default(autoincrement())
   name      String
-  polygon   Json // store array of [lat, lng]
+  polygon   Json
   vehicleId Int?
   createdAt DateTime @default(now())
 }
@@ -97,9 +96,18 @@ model Geofence {
 model Alert {
   id        Int      @id @default(autoincrement())
   vehicleId Int
-  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
-  type      String // "geofence_enter", "geofence_exit"
+  type      String
   message   String
   timestamp DateTime @default(now())
   isRead    Boolean  @default(false)
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
 }

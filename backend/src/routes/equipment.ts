@@ -26,6 +26,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
   const { name, description, pricePerDay } = req.body;
   try {
+    const existing = await prisma.equipment.findFirst({
+      where: { name: { equals: name, mode: 'insensitive' } }
+    });
+    if (existing) {
+      return res.status(400).json({ error: 'Equipment/Vehicle with this name already exists' });
+    }
+    
     const equip = await prisma.equipment.create({
       data: { name, description, pricePerDay },
     });

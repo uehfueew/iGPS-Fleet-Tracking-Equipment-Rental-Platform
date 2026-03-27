@@ -22,8 +22,23 @@ const EquipmentList = () => {
  const [isError, setIsError] = useState(false);
  const [loading, setLoading] = useState(true);
  const [isModalOpen, setIsModalOpen] = useState(false);
+
+ // Admin Add Modal State
+ const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+ const [newEqName, setNewEqName] = useState('');
+ const [newEqType, setNewEqType] = useState('Car');
+ const [newEqPlate, setNewEqPlate] = useState('');
+ const [newEqYear, setNewEqYear] = useState('');
+ const [newEqOwner, setNewEqOwner] = useState('');
+ const [newEqAvailableFrom, setNewEqAvailableFrom] = useState('');
+ const [newEqAvailableUntil, setNewEqAvailableUntil] = useState('');
+ const [newEqDesc, setNewEqDesc] = useState('');
+ const [newEqCurrency, setNewEqCurrency] = useState('USD');
+ const [newEqPrice, setNewEqPrice] = useState('');
+ 
  const authContext = useContext(AuthContext);
  const token = authContext ? authContext.token : null;
+ const isAdmin = authContext?.user?.role === 'admin';
 
  useEffect(() => {
  fetchEquipment();
@@ -39,6 +54,41 @@ const EquipmentList = () => {
  } finally {
  setLoading(false);
  }
+ };
+
+ const handleAddEquipment = async (e: React.FormEvent) => {
+   e.preventDefault();
+   try {
+     let formattedDescription = `[${newEqType}] Plate: ${newEqPlate || 'N/A'}`;
+     if (newEqYear) formattedDescription += ` | Year: ${newEqYear}`;
+     if (newEqOwner) formattedDescription += ` | Owner: ${newEqOwner}`;
+     if (newEqAvailableFrom && newEqAvailableUntil) formattedDescription += ` | Avail: ${newEqAvailableFrom} to ${newEqAvailableUntil}`;
+     formattedDescription += ` - ${newEqDesc} (${newEqCurrency})`;
+     
+     await api.post('/equipment', {
+       name: newEqName,
+       description: formattedDescription,
+       pricePerDay: Number(newEqPrice)
+     });
+     setMessage('Vehicle/Equipment added successfully!');
+     setIsError(false);
+     setNewEqName('');
+     setNewEqType('Car');
+     setNewEqPlate('');
+     setNewEqYear('');
+     setNewEqOwner('');
+     setNewEqAvailableFrom('');
+     setNewEqAvailableUntil('');
+     setNewEqDesc('');
+     setNewEqCurrency('USD');
+     setNewEqPrice('');
+     setIsAdminModalOpen(false);
+     fetchEquipment();
+   } catch (err: any) {
+     setMessage(err.response?.data?.error || err.message || 'Failed to add equipment');
+     setIsError(true);
+     // Auto hide error after a bit if desired
+   }
  };
 
  const handleBooking = async (e: React.FormEvent) => {
@@ -88,6 +138,7 @@ const EquipmentList = () => {
 
  const closeModals = () => {
  setIsModalOpen(false);
+ setIsAdminModalOpen(false);
  setSelectedEq(null);
  setMessage('');
  };
@@ -102,6 +153,16 @@ const EquipmentList = () => {
  Equipment Fleet Details
  </h2>
  <p className="text-gray-500 mt-4 text-lg max-w-2xl mx-auto">Browse our elite selection of heavy machinery and specialized equipment with transparent pricing and real-time availability tracking.</p>
+ {isAdmin && (
+   <div className="mt-8">
+     <button
+       onClick={() => setIsAdminModalOpen(true)}
+       className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-md transition-colors"
+     >
+       + Add New Vehicle / Equipment
+     </button>
+   </div>
+ )}
  </div>
 
  {loading ? (
@@ -283,6 +344,126 @@ const EquipmentList = () => {
  </Fragment>
  )}
  </AnimatePresence>
+
+ {/* Admin Add Equipment Modal */}
+ <AnimatePresence>
+ {isAdminModalOpen && (
+ <Fragment>
+ <motion.div
+ initial={{ opacity: 0 }}
+ animate={{ opacity: 1 }}
+ exit={{ opacity: 0 }}
+ className="fixed inset-0 z-40 bg-gray-900/60 backdrop-blur-sm"
+ onClick={closeModals}
+ />
+ <motion.div
+ initial={{ opacity: 0, scale: 0.9, y: 30 }}
+ animate={{ opacity: 1, scale: 1, y: 0 }}
+ exit={{ opacity: 0, scale: 0.9, y: 30 }}
+ className="fixed inset-0 z-50 flex items-center justify-center p-4"
+ >
+ <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col">
+ <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 flex justify-between items-center text-white shrink-0">
+ <div>
+ <h3 className="text-2xl font-bold">Add New Rental Vehicle</h3>
+ <p className="text-blue-100 text-sm mt-1">Make a new car or truck available for rent</p>    
+ </div>
+ <button onClick={closeModals} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+ <X className="w-5 h-5" />
+ </button>
+ </div>
+
+ <div className="p-8 pb-6 overflow-y-auto overflow-x-hidden">
+ {message && (
+ <div className={`p-4 rounded-xl mb-6 flex items-start gap-3 ${isError ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'}`}>
+ <span className="font-medium">{message}</span>
+ </div>
+ )}
+
+ <form onSubmit={handleAddEquipment} className="space-y-5">
+ 
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Name / Model</label> 
+     <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   </div>
+   
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Type</label> 
+     <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-white">
+       <option value="Car">Standard Car</option>
+       <option value="Truck">Moving Truck / Pickup</option>
+       <option value="Van">Van</option>
+       <option value="Heavy Machinery">Heavy Machinery</option>
+       <option value="Other">Other</option>
+     </select>
+   </div>
+ </div>
+
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">License Plate / ID</label> 
+     <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="e.g. ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   </div>
+   
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Year</label> 
+     <input type="number" min="1950" max={new Date().getFullYear() + 1} value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="e.g. 2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   </div>
+ </div>
+
+ <div className="grid grid-cols-1 gap-5">
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Owner / Lender Name</label> 
+     <input type="text" value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="e.g. John Doe Rentals" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   </div>
+ </div>
+
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Available From</label> 
+     <input type="date" value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   </div>
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Available Until</label> 
+     <input type="date" min={newEqAvailableFrom} value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   </div>
+ </div>
+
+ <div className="grid grid-cols-1 gap-5">
+   <div>
+     <label className="text-sm font-semibold text-gray-700 block mb-2">Daily Rental Rate</label>
+     <div className="flex gap-2">
+       <select value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-1/3 px-3 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-white">
+         <option value="USD">USD ($)</option>
+         <option value="EUR">EUR (€)</option>
+         <option value="GBP">GBP (£)</option>
+         <option value="CAD">CAD ($)</option>
+       </select>
+       <input type="number" required min="1" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="50" className="w-2/3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+     </div>
+   </div>
+ </div>
+
+ <div>
+ <label className="text-sm font-semibold text-gray-700 block mb-2">Additional Description</label>
+ <textarea required value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Mileage, conditions, capacity..." className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" rows={3}></textarea>       
+ </div>
+
+ <div className="flex justify-end gap-3 pt-4 mt-2 border-t border-gray-100">    
+ <button type="button" onClick={closeModals} className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-colors">Cancel</button>
+ <button type="submit" className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-md transform hover:-translate-y-0.5 transition-transform flex items-center gap-2">
+   <Check className="w-5 h-5"/> Add to Fleet
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+ </motion.div>
+ </Fragment>
+ )}
+ </AnimatePresence>
+
  </div>
  );
 };
