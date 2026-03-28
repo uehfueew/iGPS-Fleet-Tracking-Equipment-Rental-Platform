@@ -2,12 +2,18 @@ import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
-import { Navigation, Lock, User, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Navigation, Lock, User, AlertCircle, ArrowRight, ShieldCheck, Building, MapPin, Phone, FileText } from 'lucide-react';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('client');
+  // Company state
+  const [companyName, setCompanyName] = useState('');
+  const [locations, setLocations] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [description, setDescription] = useState('');
+  
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -18,7 +24,16 @@ const Register = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await api.post('/auth/register', { username, password, role });
+      const payload: any = { username, password, role };
+      if (role === 'admin') {
+        payload.companyDetails = {
+          name: companyName,
+          locations,
+          phoneNumber,
+          description
+        };
+      }
+      const res = await api.post('/auth/register', payload);
       const data = res.data;
       login(data.token, data.user);
       navigate('/dashboard');
@@ -101,6 +116,77 @@ const Register = () => {
               </select>
             </div>
           </div>
+
+          {role === 'admin' && (
+            <div className="space-y-4 pt-4 mt-4 border-t border-slate-200">
+              <h3 className="text-sm font-bold text-slate-700">Company Details</h3>
+              
+              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Company Name</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Building className="h-5 w-5" />
+                  </div>
+                  <input
+                    type="text"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    required
+                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+                    placeholder="E.g. Acme Transport"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Location(s)</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <MapPin className="h-5 w-5" />
+                  </div>
+                  <input
+                    type="text"
+                    value={locations}
+                    onChange={(e) => setLocations(e.target.value)}
+                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+                    placeholder="City, State"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Phone Number</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Phone className="h-5 w-5" />
+                  </div>
+                  <input
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+                    placeholder="+1 234 567 8900"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Description</label>
+                <div className="relative">
+                  <div className="absolute top-3 left-3 pointer-events-none text-slate-400">
+                    <FileText className="h-5 w-5" />
+                  </div>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={3}
+                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all resize-none"
+                    placeholder="Short description of your company..."
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="pt-3">
             <button

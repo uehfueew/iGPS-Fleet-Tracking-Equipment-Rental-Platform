@@ -129,6 +129,7 @@ const MapComponent = () => {
   const markersRef = useRef<Record<number, L.Marker>>({});
   
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [equipments, setEquipments] = useState<any[]>([]);
   const [positions, setPositions] = useState<Record<number, Position>>({});
   const [alerts, setAlerts] = useState<Alert[]>([]);
   
@@ -150,8 +151,10 @@ const MapComponent = () => {
     const fetchData = async () => {
       try {
         const vehiclesRes = await api.get("/vehicles");
+        const eqRes = await api.get("/equipment");
         if (!active) return;
         setVehicles(vehiclesRes.data);
+        setEquipments(eqRes.data);
 
         const posMap: Record<number, Position> = {};
         await Promise.all(vehiclesRes.data.map(async (v: Vehicle) => {
@@ -247,6 +250,37 @@ const MapComponent = () => {
 
   const hasCentered = useRef(false);
 
+  const getVehicleCategoryProps = (vehicle: Vehicle) => {
+    const eq = equipments.find(e => 
+      e.name === vehicle.name || 
+      (e.description && vehicle.licensePlate && e.description.includes(vehicle.licensePlate))
+    );
+
+    if (!eq) {
+      return {
+        color: '#ef4444',      // Red (Company)
+        bg: 'bg-red-50 text-red-600 border border-red-100',
+        label: 'COMPANY CAR'
+      };
+    }
+
+    const isExternal = eq.description?.includes('Owner:');
+
+    if (isExternal) {
+      return {
+        color: '#10b981',      // Green (Externally Rented In)
+        bg: 'bg-emerald-50 text-emerald-600 border border-emerald-100',
+        label: 'RENTAL (IN)'
+      };
+    } else {
+      return {
+        color: '#3b82f6',      // Blue (Put For Rent)
+        bg: 'bg-blue-50 text-blue-600 border border-blue-100',
+        label: 'FOR RENT'
+      };
+    }
+  };
+
   useEffect(() => {
     if (!leafletMap.current) return;
     const map = leafletMap.current;
@@ -256,9 +290,10 @@ const MapComponent = () => {
       const pos = positions[vehicle.id];
       if (pos) {
         latlngs.push([pos.latitude, pos.longitude]);
-        
+
+        const catProps = getVehicleCategoryProps(vehicle);
+        const color = catProps.color;
         const isSpeeding = (pos.speed || 0) > 90;
-        const color = isSpeeding ? "#e11d48" : ((pos.speed || 0) > 0 ? "#10b981" : "#f59e0b");
 
         if (markersRef.current[vehicle.id]) {
           markersRef.current[vehicle.id].setLatLng([pos.latitude, pos.longitude]);
@@ -281,8 +316,8 @@ const MapComponent = () => {
                 <span class="font-extrabold text-gray-900 text-sm leading-tight">${vehicle.name}</span>
                 <span class="text-[10px] text-gray-500 font-mono mt-0.5 uppercase tracking-tight">${vehicle.licensePlate}</span>
               </div>
-              <div class="px-1.5 py-0.5 mr-5 rounded-[4px] text-[9px] font-black shrink-0 ${isSpeeding ? 'bg-red-50 text-red-600 border border-red-100' : (pos.speed||0)>0 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-gray-100 text-gray-500 border border-gray-200'}">
-                ${isSpeeding ? 'SPEEDING' : (pos.speed||0)>0 ? 'MOVING' : 'IDLE'}
+              <div class="px-1.5 py-0.5 mr-5 rounded-[4px] text-[9px] font-black shrink-0 ${catProps.bg}">
+                ${catProps.label}
               </div>
             </div>
             <div class="flex flex-col gap-1 pb-0.5">
@@ -536,18 +571,18 @@ const MapComponent = () => {
                 const pos = positions[vehicle.id];
                 const speed = pos?.speed || 0;
                 const isSpeeding = speed > 90;
-                const isMoving = speed > 0 && !isSpeeding;
+                const catProps = getVehicleCategoryProps(vehicle);
 
                 return (
-                  <div 
+                  <div
                     key={vehicle.id}
                     onClick={() => handleFocusVehicle(vehicle.id)}
                     onMouseEnter={() => setHoveredVehicle(vehicle.id)}
                     onMouseLeave={() => setHoveredVehicle(null)}
                     className={cn(
                       "group p-2.5 bg-white rounded-lg border transition-all cursor-pointer",
-                      selectedVehicle === vehicle.id 
-                        ? "border-blue-400 ring-1 ring-blue-400 shadow-md" 
+                      selectedVehicle === vehicle.id
+                        ? "border-blue-400 ring-1 ring-blue-400 shadow-md"
                         : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
                     )}
                   >
@@ -555,14 +590,12 @@ const MapComponent = () => {
                       <div className="flex gap-2.5 items-center flex-1 min-w-0">
                         {/* Status Icon Indicator */}
                         <div className={cn(
-                          "w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors border", 
-                          isSpeeding ? "bg-red-50 text-red-600 border-red-100" : 
-                          isMoving ? "bg-emerald-50 text-emerald-600 border-emerald-100" : 
-                          "bg-gray-50 text-gray-400 border-gray-100"
+                          "w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors border",
+                          catProps.bg
                         )}>
                           <Truck className="w-4 h-4" />
                         </div>
-                        
+
                         <div className="flex-1 min-w-0 pr-2">
                           <h3 className="font-extrabold text-gray-900 text-[12px] leading-tight group-hover:text-blue-600 truncate transition-colors">
                             {vehicle.name}
@@ -572,12 +605,10 @@ const MapComponent = () => {
                               {vehicle.licensePlate}
                             </span>
                             <span className={cn(
-                              "text-[9px] font-bold px-1 py-0.5 rounded uppercase leading-none",
-                              isSpeeding ? "text-red-700 bg-red-50" : 
-                              isMoving ? "text-emerald-700 bg-emerald-50" : 
-                              "text-gray-500 bg-gray-50"
+                              "text-[9px] font-bold px-1 py-0.5 rounded uppercase leading-none border",
+                              catProps.bg
                             )}>
-                              {isSpeeding ? 'SPEEDING' : isMoving ? 'MOVING' : 'IDLE'}
+                              {catProps.label}
                             </span>
                           </div>
                         </div>

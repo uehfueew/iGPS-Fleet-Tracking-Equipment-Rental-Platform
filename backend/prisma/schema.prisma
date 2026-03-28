@@ -12,13 +12,32 @@ model User {
   username       String            @unique
   password       String
   role           String
-  subaccountId   Int?
-  subaccount     Subaccount?       @relation(fields: [subaccountId], references: [id])
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
+  subaccountId   Int?
+  reportsCreated AutomatedReport[]
+  companyProfile CompanyProfile?
   rentals        Rental[]
   subscription   Subscription?
-  reportsCreated AutomatedReport[]
+  subaccount     Subaccount?       @relation(fields: [subaccountId], references: [id])
+}
+
+model CompanyProfile {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
+  name            String
+  logoUrl         String?
+  locations       String?
+  phoneNumber     String?
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  employeeCount   String?
+  establishedYear Int?
+  industry        String?
+  taxId           String?
+  website         String?
+  user            User     @relation(fields: [userId], references: [id])
 }
 
 model Subaccount {
@@ -27,8 +46,8 @@ model Subaccount {
   parentId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  users     User[]
   groups    Group[]
+  users     User[]
 }
 
 model Group {
@@ -36,13 +55,13 @@ model Group {
   name         String
   description  String?
   subaccountId Int?
-  subaccount   Subaccount? @relation(fields: [subaccountId], references: [id])
   parentId     Int?
-  parent       Group?      @relation("SubGroups", fields: [parentId], references: [id])
-  subgroups    Group[]     @relation("SubGroups")
-  vehicles     Vehicle[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+  parent       Group?      @relation("SubGroups", fields: [parentId], references: [id])
+  subgroups    Group[]     @relation("SubGroups")
+  subaccount   Subaccount? @relation(fields: [subaccountId], references: [id])
+  vehicles     Vehicle[]
 }
 
 model Plan {
@@ -70,14 +89,14 @@ model Vehicle {
   name         String
   licensePlate String      @unique
   deviceId     String?
-  groupId      Int?
-  group        Group?      @relation(fields: [groupId], references: [id])
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+  groupId      Int?
   alerts       Alert[]
-  positions    Position[]
   driverLogs   DriverLog[]
   fuelLogs     FuelLog[]
+  positions    Position[]
+  group        Group?      @relation(fields: [groupId], references: [id])
 }
 
 model Position {
@@ -191,9 +210,9 @@ model AutomatedReport {
   schedule    String
   emailList   String
   createdById Int
-  creator     User     @relation(fields: [createdById], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  creator     User     @relation(fields: [createdById], references: [id])
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.

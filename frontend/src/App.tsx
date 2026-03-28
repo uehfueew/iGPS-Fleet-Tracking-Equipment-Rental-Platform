@@ -15,9 +15,11 @@ import AdminDrivers from './pages/AdminDrivers';
 
 import AdminRoutes from './pages/AdminRoutes';
 import AutomatedReports from './pages/AutomatedReports';
+import CompanyProfile from './pages/CompanyProfile';
+import AdminVehicles from './pages/AdminVehicles';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthContext } from './context/AuthContext';
-import { Navigation, LogOut, Map as MapIcon, Calendar, Bell, Shield, Activity, BarChart3, HardHat, FileText, Users, UsersRound, Route as RouteIcon } from 'lucide-react';
+import { Navigation, LogOut, Map as MapIcon, Calendar, Bell, Shield, Activity, BarChart3, HardHat, FileText, Users, UsersRound, Route as RouteIcon, Building, Car } from 'lucide-react';
 
 function App() {
   const { user, logout } = useContext(AuthContext);
@@ -70,6 +72,12 @@ function App() {
             {user.role === 'admin' && (
               <>
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-3">Admin Panel</p>
+                <Link to="/admin/company" className={navLinkClass('/admin/company')}>
+                  <Building className="h-4 w-4" /> Company Profile
+                </Link>
+                <Link to="/admin/vehicles" className={navLinkClass('/admin/vehicles')}>
+                  <Car className="h-4 w-4" /> Fleet Vehicles
+                </Link>
                 <Link to="/admin/rentals" className={navLinkClass('/admin/rentals')}>
                   <Calendar className="h-4 w-4" /> Manage Bookings
                 </Link>
@@ -119,7 +127,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/alerts" element={<Alerts />} />
-            <Route path="/admin/rentals" element={<AdminRentals />} />
+            <Route path="/admin/company" element={<CompanyProfile />} />            <Route path="/admin/vehicles" element={<AdminVehicles />} />                    <Route path="/admin/rentals" element={<AdminRentals />} />
             <Route path="/admin/geofences" element={<AdminGeofences />} />
             <Route path="/admin/groups" element={<AdminGroups />} />
             <Route path="/admin/drivers" element={<AdminDrivers />} />

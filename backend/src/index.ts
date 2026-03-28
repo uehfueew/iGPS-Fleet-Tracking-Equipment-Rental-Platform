@@ -22,6 +22,8 @@ import driversRouter from './routes/drivers';
 import fuelRouter from './routes/fuel';
 import routesApiRouter from './routes/routes_api';
 import automatedReportsRouter from './routes/automated_reports';
+import profileRouter from './routes/profile';
+import webhooksRouter from './routes/webhooks';
 import { authenticateToken, requireRole } from './middleware/auth';
 import { isPointInPolygon } from './utils/geo';
 import { z } from 'zod';
@@ -43,6 +45,9 @@ const io = new Server(httpServer, {
     methods: ['GET', 'POST']
   }
 });
+
+// Make io accessible inside express routes (like our webhooks)
+app.set('io', io);
 
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
@@ -82,6 +87,8 @@ app.use('/api/drivers', driversRouter);
 app.use('/api/fuel', fuelRouter);
 app.use('/api/routes_api', routesApiRouter);
 app.use('/api/automated_reports', automatedReportsRouter);
+app.use('/api/profile', profileRouter);
+app.use('/api/webhooks', webhooksRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -133,17 +140,43 @@ app.get('/api/vehicles', authenticateToken, async (req, res) => {
   }
 });
 
-// ---- Position endpoints ----
+  // Update a vehicle (and link its tracker)
+  app.put('/api/vehicles/:id', authenticateToken, requireRole('admin'), async (req, res) => {
+    try {
+      const { id } = req.params;
+      const validatedData = vehicleSchema.parse(req.body);
+      const vehicle = await prisma.vehicle.update({
+        where: { id: parseInt(id as string) },
+        data: validatedData,
+      });
+      res.json(vehicle);
+    } catch (err: any) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ error: (err as any).errors });
+      }
+      res.status(500).json({ error: err.message });
+    }
+  });
 
-// Add a GPS position for a vehicle
-app.post('/api/positions', async (req, res) => {
-  const { vehicleId, latitude, longitude, speed } = req.body;
-  try {
-    const timestamp = new Date();
-    // Use tsPool for TimescaleDB
-    const position = await prisma.position.create({
-      data: { vehicleId, latitude, longitude, speed, timestamp }
-    });
+  // Delete a vehicle
+  app.delete('/api/vehicles/:id', authenticateToken, requireRole('admin'), async (req, res) => {
+    try {
+      const { id } = req.params;
+      await prisma.vehicle.delete({
+        where: { id: parseInt(id as string) },
+      });
+      res.json({ success: true });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.post('/api/positions', authenticateToken, requireRole('admin'), async (req, res) => {
+    try {
+      const { vehicleId, latitude, longitude, speed, timestamp } = req.body;
+      const position = await prisma.position.create({
+        data: { vehicleId, latitude, longitude, speed, timestamp }
+      });
     
     // Emit new position to socket connected clients
     io.emit('new-position', {
