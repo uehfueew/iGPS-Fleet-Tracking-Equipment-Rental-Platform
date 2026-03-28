@@ -16,9 +16,16 @@ import geofencesRouter from './routes/geofences';
 import alertsRouter from './routes/alerts';
 import billingRouter from './routes/billing';
 import reportsRouter from "./routes/reports";
+import subaccountsRouter from './routes/subaccounts';
+import groupsRouter from './routes/groups';
+import driversRouter from './routes/drivers';
+import fuelRouter from './routes/fuel';
+import routesApiRouter from './routes/routes_api';
+import automatedReportsRouter from './routes/automated_reports';
 import { authenticateToken, requireRole } from './middleware/auth';
 import { isPointInPolygon } from './utils/geo';
 import { z } from 'zod';
+import { initScheduler } from './scheduler';
 
 const vehicleSchema = z.object({
   name: z.string().min(1),
@@ -69,6 +76,12 @@ app.use('/api/geofences', geofencesRouter);
 app.use('/api/alerts', alertsRouter);
 app.use("/api/reports", reportsRouter);
 app.use('/api/billing', billingRouter);
+app.use('/api/subaccounts', subaccountsRouter);
+app.use('/api/groups', groupsRouter);
+app.use('/api/drivers', driversRouter);
+app.use('/api/fuel', fuelRouter);
+app.use('/api/routes_api', routesApiRouter);
+app.use('/api/automated_reports', automatedReportsRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -241,4 +254,5 @@ app.get('/api/vehicles/:id/latest-position', authenticateToken, async (req, res)
 // Start the server
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  initScheduler(); // Initialize reports scheduler
 });

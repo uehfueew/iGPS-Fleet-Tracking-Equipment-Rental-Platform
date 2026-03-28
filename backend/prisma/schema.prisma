@@ -8,14 +8,41 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  username     String        @unique
-  password     String
-  role         String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  rentals      Rental[]
-  subscription Subscription?
+  id             Int               @id @default(autoincrement())
+  username       String            @unique
+  password       String
+  role           String
+  subaccountId   Int?
+  subaccount     Subaccount?       @relation(fields: [subaccountId], references: [id])
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  rentals        Rental[]
+  subscription   Subscription?
+  reportsCreated AutomatedReport[]
+}
+
+model Subaccount {
+  id        Int      @id @default(autoincrement())
+  name      String
+  parentId  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+  groups    Group[]
+}
+
+model Group {
+  id           Int         @id @default(autoincrement())
+  name         String
+  description  String?
+  subaccountId Int?
+  subaccount   Subaccount? @relation(fields: [subaccountId], references: [id])
+  parentId     Int?
+  parent       Group?      @relation("SubGroups", fields: [parentId], references: [id])
+  subgroups    Group[]     @relation("SubGroups")
+  vehicles     Vehicle[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model Plan {
@@ -39,14 +66,18 @@ model Subscription {
 }
 
 model Vehicle {
-  id           Int        @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   name         String
-  licensePlate String     @unique
+  licensePlate String      @unique
   deviceId     String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  groupId      Int?
+  group        Group?      @relation(fields: [groupId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   alerts       Alert[]
   positions    Position[]
+  driverLogs   DriverLog[]
+  fuelLogs     FuelLog[]
 }
 
 model Position {
@@ -101,6 +132,68 @@ model Alert {
   timestamp DateTime @default(now())
   isRead    Boolean  @default(false)
   vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+model Driver {
+  id            Int         @id @default(autoincrement())
+  name          String
+  licenseNumber String?
+  contact       String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  driverLogs    DriverLog[]
+}
+
+model DriverLog {
+  id        Int      @id @default(autoincrement())
+  driverId  Int
+  vehicleId Int
+  action    String
+  notes     String?
+  timestamp DateTime @default(now())
+  driver    Driver   @relation(fields: [driverId], references: [id])
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+model FuelLog {
+  id        Int      @id @default(autoincrement())
+  vehicleId Int
+  amount    Float
+  cost      Float?
+  timestamp DateTime @default(now())
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+model Route {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String?
+  startLocation Json?
+  endLocation   Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  stops         Stop[]
+}
+
+model Stop {
+  id           Int       @id @default(autoincrement())
+  routeId      Int
+  name         String
+  location     Json
+  assignedTime DateTime?
+  route        Route     @relation(fields: [routeId], references: [id])
+}
+
+model AutomatedReport {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  schedule    String
+  emailList   String
+  createdById Int
+  creator     User     @relation(fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.

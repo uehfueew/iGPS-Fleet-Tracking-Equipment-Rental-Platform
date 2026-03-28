@@ -10,9 +10,13 @@ import AdminGeofences from './pages/AdminGeofences';
 import Alerts from './pages/Alerts';
 import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
+import AdminGroups from './pages/AdminGroups';
+import AdminDrivers from './pages/AdminDrivers';
+import AdminRoutes from './pages/AdminRoutes';
+import AutomatedReports from './pages/AutomatedReports';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthContext } from './context/AuthContext';
-import { Navigation, LogOut, Map as MapIcon, Calendar, Bell, Shield, Activity, BarChart3, HardHat } from 'lucide-react';
+import { Navigation, LogOut, Map as MapIcon, Calendar, Bell, Shield, Activity, BarChart3, HardHat, FileText, Users, UsersRound, Route as RouteIcon } from 'lucide-react';
 
 function App() {
   const { user, logout } = useContext(AuthContext);
@@ -71,6 +75,18 @@ function App() {
                 <Link to="/admin/geofences" className={navLinkClass('/admin/geofences')}>
                   <Shield className="h-4 w-4" /> Setup Geofences
                 </Link>
+                <Link to="/admin/groups" className={navLinkClass('/admin/groups')}>
+                  <Users className="h-4 w-4" /> Groups & Subaccounts
+                </Link>
+                <Link to="/admin/drivers" className={navLinkClass('/admin/drivers')}>
+                  <UsersRound className="h-4 w-4" /> Drivers & Logs
+                </Link>
+                <Link to="/admin/routes" className={navLinkClass('/admin/routes')}>
+                  <RouteIcon className="h-4 w-4" /> Routes & Stops
+                </Link>
+                <Link to="/admin/reports" className={navLinkClass('/admin/reports')}>
+                  <FileText className="h-4 w-4" /> Reports & Automation
+                </Link>
               </>
             )}
           </div>
@@ -104,6 +120,10 @@ function App() {
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/admin/rentals" element={<AdminRentals />} />
             <Route path="/admin/geofences" element={<AdminGeofences />} />
+            <Route path="/admin/groups" element={<AdminGroups />} />
+            <Route path="/admin/drivers" element={<AdminDrivers />} />
+            <Route path="/admin/routes" element={<AdminRoutes />} />
+            <Route path="/admin/reports" element={<AutomatedReports />} />
             <Route path="/history" element={<VehicleHistory />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/" element={<Map />} />

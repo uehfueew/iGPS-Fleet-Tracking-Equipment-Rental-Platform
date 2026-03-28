@@ -20,9 +20,16 @@ const geofences_1 = __importDefault(require("./routes/geofences"));
 const alerts_1 = __importDefault(require("./routes/alerts"));
 const billing_1 = __importDefault(require("./routes/billing"));
 const reports_1 = __importDefault(require("./routes/reports"));
+const subaccounts_1 = __importDefault(require("./routes/subaccounts"));
+const groups_1 = __importDefault(require("./routes/groups"));
+const drivers_1 = __importDefault(require("./routes/drivers"));
+const fuel_1 = __importDefault(require("./routes/fuel"));
+const routes_api_1 = __importDefault(require("./routes/routes_api"));
+const automated_reports_1 = __importDefault(require("./routes/automated_reports"));
 const auth_2 = require("./middleware/auth");
 const geo_1 = require("./utils/geo");
 const zod_1 = require("zod");
+const scheduler_1 = require("./scheduler");
 const vehicleSchema = zod_1.z.object({
     name: zod_1.z.string().min(1),
     licensePlate: zod_1.z.string().min(1),
@@ -63,6 +70,12 @@ app.use('/api/geofences', geofences_1.default);
 app.use('/api/alerts', alerts_1.default);
 app.use("/api/reports", reports_1.default);
 app.use('/api/billing', billing_1.default);
+app.use('/api/subaccounts', subaccounts_1.default);
+app.use('/api/groups', groups_1.default);
+app.use('/api/drivers', drivers_1.default);
+app.use('/api/fuel', fuel_1.default);
+app.use('/api/routes_api', routes_api_1.default);
+app.use('/api/automated_reports', automated_reports_1.default);
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK' });
@@ -228,4 +241,5 @@ app.get('/api/vehicles/:id/latest-position', auth_2.authenticateToken, async (re
 // Start the server
 httpServer.listen(port, () => {
     console.log(`Server running on port ${port}`);
+    (0, scheduler_1.initScheduler)(); // Initialize reports scheduler
 });

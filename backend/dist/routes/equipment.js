@@ -30,6 +30,12 @@ router.get('/:id', async (req, res) => {
 router.post('/', auth_1.authenticateToken, (0, auth_1.requireRole)('admin'), async (req, res) => {
     const { name, description, pricePerDay } = req.body;
     try {
+        const existing = await db_1.prisma.equipment.findFirst({
+            where: { name: { equals: name, mode: 'insensitive' } }
+        });
+        if (existing) {
+            return res.status(400).json({ error: 'Equipment/Vehicle with this name already exists' });
+        }
         const equip = await db_1.prisma.equipment.create({
             data: { name, description, pricePerDay },
         });
