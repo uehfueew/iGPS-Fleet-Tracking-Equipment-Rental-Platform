@@ -28,6 +28,19 @@ router.post('/', auth_1.authenticateToken, (0, auth_1.requireRole)('admin'), asy
         res.status(500).json({ error: err.message });
     }
 });
+router.patch('/:id', auth_1.authenticateToken, (0, auth_1.requireRole)('admin'), async (req, res) => {
+    const { name, polygon, vehicleId } = req.body;
+    try {
+        const gf = await db_1.prisma.geofence.update({
+            where: { id: parseInt(req.params.id) },
+            data: { name, polygon, vehicleId }
+        });
+        res.json(gf);
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 router.delete('/:id', auth_1.authenticateToken, (0, auth_1.requireRole)('admin'), async (req, res) => {
     try {
         await db_1.prisma.geofence.delete({ where: { id: parseInt(req.params.id) } });

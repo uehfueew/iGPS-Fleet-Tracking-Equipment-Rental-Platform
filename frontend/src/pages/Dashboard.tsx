@@ -75,13 +75,13 @@ export default function Dashboard() {
     <div className="space-y-6 animate-fade-in pb-12 p-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight font-sans">Dashboard</h1>
-          <p className="text-slate-500 mt-2 font-medium tracking-wide">Good morning, here is your fleet overview.</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-300 tracking-tight font-sans">Dashboard</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium tracking-wide">Good morning, here is your fleet overview.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="flex items-center gap-4 mb-4">
             <div className="bg-blue-100 p-3 rounded-lg text-blue-600">
               <Truck className="h-6 w-6" />
@@ -89,12 +89,12 @@ export default function Dashboard() {
             <h3 className="text-blue-500 font-semibold text-sm uppercase tracking-wider">Total Fleet</h3>
           </div>
           <div className="flex items-end gap-2">
-            <p className="text-4xl font-extrabold text-slate-800">{stats.totalAssets}</p>
-            <p className="text-slate-400 font-medium pb-1 tracking-wide">vehicles</p>
+            <p className="text-4xl font-extrabold text-slate-800 dark:text-slate-200">{stats.totalAssets}</p>
+            <p className="text-slate-400 dark:text-slate-500 font-medium pb-1 tracking-wide">vehicles</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-emerald-50 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="flex items-center gap-4 mb-4">
             <div className="bg-emerald-100 p-3 rounded-lg text-emerald-600">
               <CarFront className="h-6 w-6" />
@@ -103,11 +103,11 @@ export default function Dashboard() {
           </div>
           <div className="flex items-end gap-2">
             <p className="text-4xl font-extrabold text-emerald-600">{stats.activeAssets}</p>
-            <p className="text-slate-400 font-medium pb-1 tracking-wide">online</p>
+            <p className="text-slate-400 dark:text-slate-500 font-medium pb-1 tracking-wide">online</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="flex items-center gap-4 mb-4">
             <div className="bg-amber-100 p-3 rounded-lg text-amber-600">
               <Calendar className="h-6 w-6" />
@@ -115,12 +115,12 @@ export default function Dashboard() {
             <h3 className="text-amber-500 font-semibold text-sm uppercase tracking-wider">Active Rentals</h3>
           </div>
           <div className="flex items-end gap-2">
-            <p className="text-4xl font-extrabold text-slate-800">{stats.activeRentals}</p>
-            <p className="text-slate-400 font-medium pb-1 tracking-wide">contracts</p>
+            <p className="text-4xl font-extrabold text-slate-800 dark:text-slate-200">{stats.activeRentals}</p>
+            <p className="text-slate-400 dark:text-slate-500 font-medium pb-1 tracking-wide">contracts</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-red-50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-red-50 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="flex items-center gap-4 mb-4">
             <div className="bg-red-100 p-3 rounded-lg text-red-600">
               <Bell className="h-6 w-6" />
@@ -134,8 +134,8 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[400px]">
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col h-full lg:col-span-1">
-          <h3 className="text-lg font-bold text-slate-900 mb-6 font-sans">Alerts Distribution</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col h-full lg:col-span-1">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-300 mb-6 font-sans">Alerts Distribution</h3>
           <div className="flex-1 w-full min-h-0">
             {alertsData && alertsData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -161,7 +161,7 @@ export default function Dashboard() {
                 </PieChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-slate-400">
+              <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500">
                 <Bell className="h-10 w-10 mb-2 opacity-20" />
                 <p>No alerts recorded</p>
               </div>
@@ -169,8 +169,8 @@ export default function Dashboard() {
           </div>
         </div>
         
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col h-full lg:col-span-2">
-          <h3 className="text-lg font-bold text-slate-900 mb-6 font-sans">System Activity Snapshot</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col h-full lg:col-span-2">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-300 mb-6 font-sans">System Activity Snapshot</h3>
           <div className="flex-1 w-full min-h-0">
             {alertsData && alertsData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -195,7 +195,7 @@ export default function Dashboard() {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-slate-400">
+              <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500">
                 <ShieldCheck className="h-10 w-10 mb-2 opacity-20" />
                 <p>No activity recorded</p>
               </div>

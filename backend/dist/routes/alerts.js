@@ -20,4 +20,29 @@ router.get('/', auth_1.authenticateToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+router.put('/:id/read', auth_1.authenticateToken, async (req, res) => {
+    try {
+        const alertId = parseInt(req.params.id);
+        const updated = await db_1.prisma.alert.update({
+            where: { id: alertId },
+            data: { isRead: true }
+        });
+        res.json(updated);
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+router.put('/mark-all-read', auth_1.authenticateToken, async (req, res) => {
+    try {
+        const updated = await db_1.prisma.alert.updateMany({
+            where: { isRead: false },
+            data: { isRead: true }
+        });
+        res.json(updated);
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 exports.default = router;

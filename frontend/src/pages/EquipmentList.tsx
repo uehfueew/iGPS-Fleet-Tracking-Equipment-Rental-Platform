@@ -146,13 +146,13 @@ const EquipmentList = () => {
  return (
  <div className="p-8 max-w-7xl mx-auto min-h-screen">
  <div className="mb-10 text-center">
- <h2 className="text-4xl font-extrabold text-gray-900 flex items-center justify-center gap-4">
+ <h2 className="text-4xl font-extrabold text-gray-900 dark:text-slate-300 flex items-center justify-center gap-4">
  <div className="p-3 bg-blue-100 rounded-full">
  <Truck className="w-10 h-10 text-blue-600" />
  </div>
  Equipment Fleet Details
  </h2>
- <p className="text-gray-500 mt-4 text-lg max-w-2xl mx-auto">Browse our elite selection of heavy machinery and specialized equipment with transparent pricing and real-time availability tracking.</p>
+ <p className="text-gray-500 dark:text-slate-400 mt-4 text-lg max-w-2xl mx-auto">Browse our elite selection of heavy machinery and specialized equipment with transparent pricing and real-time availability tracking.</p>
  {isAdmin && (
    <div className="mt-8">
      <button
@@ -175,15 +175,15 @@ const EquipmentList = () => {
  <motion.div
  key={eq.id}
  whileHover={{ y: -8, scale: 1.02 }}
- className={`relative overflow-hidden group bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-300 ${!eq.available ? 'opacity-80' : ''}`}
+ className={`relative overflow-hidden group bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-800 transition-all duration-300 ${!eq.available ? 'opacity-80' : ''}`}
  >
  <div className="h-48 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 flex items-center justify-center">
  <Truck className="w-24 h-24 text-blue-200 group-hover:scale-110 transition-transform duration-500" />
  </div>
  
- <div className="p-6 relative z-10 bg-white rounded-t-3xl -mt-6">
+ <div className="p-6 relative z-10 bg-white dark:bg-slate-900 rounded-t-3xl -mt-6">
  <div className="flex justify-between items-start mb-4">
- <h3 className="text-xl font-bold text-gray-900">{eq.name}</h3>
+ <h3 className="text-xl font-bold text-gray-900 dark:text-slate-300">{eq.name}</h3>
  <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-sm ${
  eq.available 
  ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
@@ -193,12 +193,12 @@ const EquipmentList = () => {
  </span>
  </div>
  
- <p className="text-gray-500 text-sm mb-6 line-clamp-2 min-h-[40px]">{eq.description}</p>
+ <p className="text-gray-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 min-h-[40px]">{eq.description}</p>
  
  <div className="flex items-center justify-between mb-6">
  <div className="flex flex-col">
- <span className="text-gray-400 text-xs uppercase tracking-wider font-semibold">Daily Rate</span>
- <span className="text-2xl font-black text-gray-900 flex items-center">
+ <span className="text-gray-400 dark:text-slate-500 text-xs uppercase tracking-wider font-semibold">Daily Rate</span>
+ <span className="text-2xl font-black text-gray-900 dark:text-slate-300 flex items-center">
  <DollarSign className="w-5 h-5 text-green-500" />
  {eq.pricePerDay}
  </span>
@@ -211,7 +211,7 @@ const EquipmentList = () => {
  className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-all duration-300 shadow-md hover:shadow-lg ${
  eq.available 
  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transform hover:-translate-y-1' 
- : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shadow-none'
+ : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-500 cursor-not-allowed border border-gray-200 dark:border-slate-800 shadow-none'
  }`}
  >
  {eq.available ? (
@@ -243,13 +243,13 @@ const EquipmentList = () => {
  exit={{ opacity: 0, scale: 0.9, y: 30 }}
  className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
  >
- <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden pointer-events-auto">
+ <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden pointer-events-auto">
  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 flex justify-between items-center text-white">
  <div>
  <h3 className="text-2xl font-bold">Book Equipment</h3>
  <p className="text-blue-100 text-sm mt-1">{selectedEq.name}</p>
  </div>
- <button onClick={closeModals} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+ <button onClick={closeModals} className="p-2 bg-white dark:bg-slate-900/10 hover:bg-white dark:bg-slate-900/20 rounded-full transition-colors">
  <X className="w-5 h-5" />
  </button>
  </div>
@@ -269,28 +269,28 @@ const EquipmentList = () => {
  <form onSubmit={handleBooking} className="space-y-6">
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
  <div className="space-y-2">
- <label className="text-sm font-semibold text-gray-700">Start Date</label>
+ <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Start Date</label>
  <div className="relative">
- <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+ <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 dark:text-slate-500" />
  <input
  type="date"
  required
  min={new Date().toISOString().split('T')[0]}
- className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+ className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium"
  value={startDate}
  onChange={(e) => setStartDate(e.target.value)}
  />
  </div>
  </div>
  <div className="space-y-2">
- <label className="text-sm font-semibold text-gray-700">End Date</label>
+ <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">End Date</label>
  <div className="relative">
- <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+ <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 dark:text-slate-500" />
  <input
  type="date"
  required
  min={startDate || new Date().toISOString().split('T')[0]}
- className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+ className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium"
  value={endDate}
  onChange={(e) => setEndDate(e.target.value)}
  />
@@ -304,28 +304,28 @@ const EquipmentList = () => {
  type="checkbox"
  checked={addTracking}
  onChange={(e) => setAddTracking(e.target.checked)}
- className="w-5 h-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer"
+ className="w-5 h-5 rounded text-blue-600 border-gray-300 dark:border-slate-700 focus:ring-blue-500 cursor-pointer"
  />
- <span className="font-semibold text-gray-800">Include GPS Tracking Module</span>
+ <span className="font-semibold text-gray-800 dark:text-slate-200">Include GPS Tracking Module</span>
  </label>
- <p className="text-sm text-gray-500 ml-8">Enable real-time location monitoring and security alerts for this equipment during rental.</p>
+ <p className="text-sm text-gray-500 dark:text-slate-400 ml-8">Enable real-time location monitoring and security alerts for this equipment during rental.</p>
  </div>
 
- <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 flex justify-between items-center">
+ <div className="bg-gray-50 dark:bg-slate-800/50 p-6 rounded-xl border border-gray-200 dark:border-slate-800 flex justify-between items-center">
  <div>
- <span className="text-gray-500 font-semibold block mb-1">Total Estimated Cost</span>
- <span className="text-sm text-gray-400">{days} days × ${selectedEq.pricePerDay}</span>
+ <span className="text-gray-500 dark:text-slate-400 font-semibold block mb-1">Total Estimated Cost</span>
+ <span className="text-sm text-gray-400 dark:text-slate-500">{days} days × ${selectedEq.pricePerDay}</span>
  </div>
  <div className="text-3xl font-black text-green-600">
  ${days * selectedEq.pricePerDay}
  </div>
  </div>
 
- <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+ <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-slate-800">
  <button
  type="button"
  onClick={closeModals}
- className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 :bg-gray-700 transition-colors"
+ className="px-6 py-3 rounded-xl border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 font-bold hover:bg-gray-50 dark:hover:bg-slate-800/80 :bg-gray-700 transition-colors"
  >
  Cancel
  </button>
@@ -362,13 +362,13 @@ const EquipmentList = () => {
  exit={{ opacity: 0, scale: 0.9, y: 30 }}
  className="fixed inset-0 z-50 flex items-center justify-center p-4"
  >
- <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col">
+ <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col">
  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 flex justify-between items-center text-white shrink-0">
  <div>
  <h3 className="text-2xl font-bold">Add New Rental Vehicle</h3>
  <p className="text-blue-100 text-sm mt-1">Make a new car or truck available for rent</p>    
  </div>
- <button onClick={closeModals} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+ <button onClick={closeModals} className="p-2 bg-white dark:bg-slate-900/10 hover:bg-white dark:bg-slate-900/20 rounded-full transition-colors">
  <X className="w-5 h-5" />
  </button>
  </div>
@@ -384,13 +384,13 @@ const EquipmentList = () => {
  
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
    <div className="space-y-2">
-     <label className="text-sm font-semibold text-gray-700">Vehicle Name / Model</label> 
-     <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
+     <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Vehicle Name / Model</label> 
+     <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
    </div>
    
    <div className="space-y-2">
-     <label className="text-sm font-semibold text-gray-700">Vehicle Type</label> 
-     <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm">
+     <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Vehicle Type</label> 
+     <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm">
        <option value="Car">Standard Car</option>
        <option value="Truck">Moving Truck / Pickup</option>
        <option value="Van">Van</option>
@@ -402,19 +402,19 @@ const EquipmentList = () => {
 
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
    <div className="space-y-2">
-     <label className="text-sm font-semibold text-gray-700">License Plate / ID</label> 
-     <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="e.g. ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium uppercase shadow-sm" />
+     <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">License Plate / ID</label> 
+     <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="e.g. ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium uppercase shadow-sm" />
    </div>
    
    <div className="space-y-2">
-     <label className="text-sm font-semibold text-gray-700">Vehicle Year</label> 
-     <input type="number" min="1950" max={new Date().getFullYear() + 1} value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="e.g. 2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
+     <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Vehicle Year</label> 
+     <input type="number" min="1950" max={new Date().getFullYear() + 1} value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="e.g. 2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
    </div>
  </div>
 
  <div className="space-y-2">
-   <label className="text-sm font-semibold text-gray-700">Owner / Lender Name</label> 
-   <input type="text" value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="e.g. John Doe Rentals" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
+   <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Owner / Lender Name</label> 
+   <input type="text" value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="e.g. John Doe Rentals" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
  </div>
 
  <div className="p-5 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-4">
@@ -422,35 +422,35 @@ const EquipmentList = () => {
    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
      <div className="space-y-2">
        <label className="text-xs font-semibold text-blue-800 uppercase tracking-wide">Available From</label> 
-       <input type="date" value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
+       <input type="date" value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-blue-200 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
      </div>
      <div className="space-y-2">
        <label className="text-xs font-semibold text-blue-800 uppercase tracking-wide">Available Until</label> 
-       <input type="date" min={newEqAvailableFrom} value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
+       <input type="date" min={newEqAvailableFrom} value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-blue-200 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
      </div>
    </div>
  </div>
 
  <div className="space-y-2">
-   <label className="text-sm font-semibold text-gray-700">Daily Rental Rate</label>
+   <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Daily Rental Rate</label>
    <div className="flex gap-3">
-     <select value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-1/3 px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm">
+     <select value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-1/3 px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm">
        <option value="USD">USD ($)</option>
        <option value="EUR">EUR (€)</option>
        <option value="GBP">GBP (£)</option>
        <option value="CAD">CAD ($)</option>
      </select>
-     <input type="number" required min="1" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="50" className="w-2/3 px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm text-lg" />
+     <input type="number" required min="1" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="50" className="w-2/3 px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm text-lg" />
    </div>
  </div>
 
  <div className="space-y-2">
-   <label className="text-sm font-semibold text-gray-700">Additional Description</label>
-   <textarea required value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Mileage, conditions, capacity..." className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm resize-none" rows={3}></textarea>       
+   <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">Additional Description</label>
+   <textarea required value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Mileage, conditions, capacity..." className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm resize-none" rows={3}></textarea>       
  </div>
 
- <div className="flex justify-end gap-3 pt-6 mt-4 border-t border-gray-100">    
-   <button type="button" onClick={closeModals} className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-colors">Cancel</button>
+ <div className="flex justify-end gap-3 pt-6 mt-4 border-t border-gray-100 dark:border-slate-800">    
+   <button type="button" onClick={closeModals} className="px-6 py-3 rounded-xl border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 font-bold hover:bg-gray-50 dark:hover:bg-slate-800/80 transition-colors">Cancel</button>
    <button type="submit" className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-md transform hover:-translate-y-0.5 transition-transform flex items-center gap-2">
      <Check className="w-5 h-5"/> Add to Fleet
    </button>

@@ -77,8 +77,8 @@ const Alerts = () => {
  <div className="p-8 max-w-5xl mx-auto min-h-screen">
  <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
  <div>
- <h2 className="text-4xl font-extrabold text-gray-900 flex items-center gap-4">
- <div className="p-3 bg-blue-100 rounded-full relative">
+ <h2 className="text-4xl font-extrabold text-gray-900 dark:text-slate-300 flex items-center gap-4">
+ <div className="p-3 bg-blue-100 dark:bg-blue-900/40 rounded-full relative">
  <Bell className="w-10 h-10 text-blue-600" />
  {unreadCount > 0 && (
  <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-white rounded-full animate-pulse"></span>
@@ -86,19 +86,19 @@ const Alerts = () => {
  </div>
  System Alerts
  </h2>
- <p className="text-gray-500 mt-4 text-lg">Monitor critical events, geofence breaches, and maintenance warnings across your fleet.</p>
+ <p className="text-gray-500 dark:text-slate-400 mt-4 text-lg">Monitor critical events, geofence breaches, and maintenance warnings across your fleet.</p>
  </div>
  
  <div className="flex flex-col sm:flex-row gap-4">
- <div className="flex gap-1 bg-gray-100 p-1 rounded-xl h-fit">
-  <button onClick={() => setFilter('all')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'all' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>All</button>
-  <button onClick={() => setFilter('unread')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'unread' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Unread</button>
-  <button onClick={() => setFilter('read')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'read' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Read</button>
+ <div className="flex gap-1 bg-gray-100 dark:bg-slate-800 p-1 rounded-xl h-fit">
+  <button onClick={() => setFilter('all')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'all' ? 'bg-white dark:bg-slate-900 shadow-sm text-blue-600' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:text-slate-300'}`}>All</button>
+  <button onClick={() => setFilter('unread')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'unread' ? 'bg-white dark:bg-slate-900 shadow-sm text-blue-600' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:text-slate-300'}`}>Unread</button>
+  <button onClick={() => setFilter('read')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'read' ? 'bg-white dark:bg-slate-900 shadow-sm text-blue-600' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:text-slate-300'}`}>Read</button>
  </div>
  {unreadCount > 0 && (
  <button
  onClick={() => setShowMarkAllModal(true)}
- className="flex items-center justify-center gap-2 px-5 py-2.5 h-fit whitespace-nowrap bg-white border border-gray-200 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 transition-colors shadow-sm"
+ className="flex items-center justify-center gap-2 px-5 py-2.5 h-fit whitespace-nowrap bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-gray-700 dark:text-slate-300 font-semibold hover:bg-gray-50 dark:hover:bg-slate-800/80 transition-colors shadow-sm"
  >
  <CheckCheck className="w-5 h-5" />
  Mark All Read
@@ -115,13 +115,13 @@ const Alerts = () => {
  <motion.div 
  initial={{ opacity: 0, scale: 0.95 }}
  animate={{ opacity: 1, scale: 1 }}
- className="text-center py-24 bg-white rounded-3xl border border-gray-100 shadow-sm"
+ className="text-center py-24 bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm"
  >
- <div className="mx-auto w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6">
- <CheckCircle2 className="h-12 w-12 text-gray-400" />
+ <div className="mx-auto w-24 h-24 bg-gray-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mb-6">
+ <CheckCircle2 className="h-12 w-12 text-gray-400 dark:text-slate-500" />
  </div>
- <h3 className="text-2xl font-bold text-gray-900">All Clear!</h3>
- <p className="mt-2 text-gray-500 text-lg">You have no new alerts matching your criteria.</p>
+ <h3 className="text-2xl font-bold text-gray-900 dark:text-slate-300">All Clear!</h3>
+ <p className="mt-2 text-gray-500 dark:text-slate-400 text-lg">You have no new alerts matching your criteria.</p>
  </motion.div>
  ) : (
  <div className="grid gap-4">
@@ -135,12 +135,12 @@ const Alerts = () => {
  exit={{ opacity: 0, scale: 0.95 }}
  className={`group flex flex-col sm:flex-row items-start sm:items-center gap-5 p-6 rounded-2xl border transition-all duration-300 ${
  a.isRead 
- ? 'bg-gray-50/50 border-gray-100 opacity-70 hover:opacity-100' 
- : 'bg-white border-blue-100 shadow-lg hover:shadow-xl'
+ ? 'bg-gray-50 dark:bg-slate-800/40 border-gray-100 dark:border-slate-800/60 opacity-70 hover:opacity-100' 
+ : 'bg-white dark:bg-indigo-950/40 border-blue-100 dark:border-indigo-900/60 shadow-lg hover:shadow-xl'
  }`}
  >
  <div className={`p-4 rounded-xl shrink-0 transition-colors ${
- a.isRead ? 'bg-gray-100 ' : 'bg-blue-50 '
+ a.isRead ? 'bg-gray-100 dark:bg-slate-800/80 ' : 'bg-blue-50 dark:bg-blue-900/30 '
  }`}>
  {getAlertIcon(a.type)}
  </div>
@@ -152,14 +152,14 @@ const Alerts = () => {
  New Alert
  </span>
  )}
- <span className="text-sm font-semibold tracking-wide text-gray-400">
+ <span className="text-sm font-semibold tracking-wide text-gray-400 dark:text-slate-500">
  {new Date(a.timestamp).toLocaleString(undefined, {
  month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
  })}
  </span>
  </div>
- <p className={`text-lg transition-colors ${a.isRead ? 'text-gray-600 ' : 'text-gray-900 font-medium'}`}>
- {a.vehicle?.name ? <span className="font-bold mr-2 text-gray-800">{a.vehicle.name}</span> : null}
+ <p className={`text-lg transition-colors ${a.isRead ? 'text-gray-600 dark:text-slate-400 ' : 'text-gray-900 dark:text-slate-300 font-medium'}`}>
+ {a.vehicle?.name ? <span className="font-bold mr-2 text-gray-800 dark:text-slate-200">{a.vehicle.name}</span> : null}
  {a.message}
  </p>
  </div>
@@ -167,7 +167,7 @@ const Alerts = () => {
  {!a.isRead && (
  <button
  onClick={() => markAsRead(a.id)}
- className="shrink-0 mt-4 sm:mt-0 px-6 py-3 border-2 border-gray-100 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-100 :bg-gray-700 hover:border-gray-200 :border-gray-600 transition-all active:scale-95"
+ className="shrink-0 mt-4 sm:mt-0 px-6 py-3 border-2 border-gray-100 dark:border-slate-800 rounded-xl text-sm font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 dark:hover:bg-slate-700 hover:border-gray-200 dark:border-slate-800 dark:hover:border-slate-600 transition-all active:scale-95"
  >
  Mark as Read
  </button>
@@ -195,18 +195,18 @@ const Alerts = () => {
  exit={{ opacity: 0, scale: 0.9, y: 30 }}
  className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
  >
- <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden pointer-events-auto">
+ <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden pointer-events-auto">
  <div className="p-8 text-center">
- <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+ <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
  <CheckCheck className="w-10 h-10 text-blue-600" />
  </div>
- <h3 className="text-2xl font-bold text-gray-900 mb-2">Mark all as read?</h3>
- <p className="text-gray-500 mb-8 text-lg">Are you sure you want to dismiss all {unreadCount} unread alerts? You can still view them later.</p>
+ <h3 className="text-2xl font-bold text-gray-900 dark:text-slate-300 mb-2">Mark all as read?</h3>
+ <p className="text-gray-500 dark:text-slate-400 mb-8 text-lg">Are you sure you want to dismiss all {unreadCount} unread alerts? You can still view them later.</p>
  
  <div className="flex flex-col sm:flex-row gap-3">
  <button
  onClick={() => setShowMarkAllModal(false)}
- className="flex-1 px-6 py-4 rounded-xl border-2 border-gray-200 text-gray-700 font-bold hover:bg-gray-50 :bg-gray-700 transition-colors"
+ className="flex-1 px-6 py-4 rounded-xl border-2 border-gray-200 dark:border-slate-800 text-gray-700 dark:text-slate-300 font-bold hover:bg-gray-50 dark:hover:bg-slate-800/80 dark:hover:bg-slate-700 transition-colors"
  >
  Cancel
  </button>

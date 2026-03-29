@@ -463,14 +463,14 @@ export default function AdminRoutes() {
 
 
   return (
-    <div className="p-8 h-full bg-slate-50/50">
+    <div className="p-8 h-full bg-slate-50/50 dark:bg-slate-950/50">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 border-b-2 border-emerald-500 pb-2 inline-flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-300 border-b-2 border-emerald-500 pb-2 inline-flex items-center gap-2">
               <Route className="text-emerald-600" /> Routes & Stops
             </h1>
-            <p className="text-slate-500 mt-2">Configure default paths and planned delivery stops for your fleet.</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-2">Configure default paths and planned delivery stops for your fleet.</p>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
@@ -480,20 +480,20 @@ export default function AdminRoutes() {
           </button>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           <ul className="divide-y divide-slate-100">
             {loading ? (
-               <li className="p-8 text-center text-slate-400">Loading routes...</li>
+               <li className="p-8 text-center text-slate-400 dark:text-slate-500">Loading routes...</li>
             ) : routes.length === 0 ? (
-               <li className="p-8 text-center text-slate-400">No routes configured.</li>
+               <li className="p-8 text-center text-slate-400 dark:text-slate-500">No routes configured.</li>
             ) : (
               routes.map(rt => (
-                <li key={rt.id} className="p-6 hover:bg-slate-50 transition flex items-center justify-between cursor-pointer" onClick={() => handleViewClick(rt)}>
+                <li key={rt.id} className="p-6 hover:bg-slate-50 dark:bg-slate-950 transition flex items-center justify-between cursor-pointer" onClick={() => handleViewClick(rt)}>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-lg mb-1">{rt.name}</h3>
-                    <p className="text-slate-500 text-sm">{rt.description || 'No description'}</p>
+                    <h3 className="font-bold text-slate-900 dark:text-slate-300 text-lg mb-1">{rt.name}</h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">{rt.description || 'No description'}</p>
                 {rt.stops && rt.stops.length > 0 && (
-                  <div className="text-xs text-slate-500 mt-2 flex items-center gap-2">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2">
                     <MapPin className="w-3 h-3 text-emerald-500" />
                     <span>{rt.stops.map(s => s.name).join(' → ')}</span>
                   </div>
@@ -519,28 +519,28 @@ export default function AdminRoutes() {
               {/* Left Column: Details */}
               <div className="flex flex-col gap-5">
                 {isViewMode ? (
-                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-2">
-                    <h2 className="text-xl font-bold text-slate-900 mb-2">{formData.name}</h2>
-                    <p className="text-sm text-slate-600 leading-relaxed">{formData.description || 'No description provided.'}</p>
+                  <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 mb-2">
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-300 mb-2">{formData.name}</h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{formData.description || 'No description provided.'}</p>
                   </div>
                 ) : (
                   <>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Route Name</label>
+                      <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Route Name</label>
                       <input
                         type="text"
                         required
                         placeholder="e.g. Morning Logistics Route A"
-                        className="block w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-sm outline-none text-slate-900"
+                        className="block w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-sm outline-none text-slate-900 dark:text-slate-300"
                         value={formData.name}
                         onChange={e => setFormData({ ...formData, name: e.target.value })}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Description</label>
+                      <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
                       <textarea
                         placeholder="Enter path details, checkpoints, or schedule notes..."
-                        className="block w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-sm outline-none text-slate-900 min-h-[120px] resize-none"
+                        className="block w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-sm outline-none text-slate-900 dark:text-slate-300 min-h-[120px] resize-none"
                         value={formData.description}
                         onChange={e => setFormData({ ...formData, description: e.target.value })}
                       />
@@ -551,7 +551,7 @@ export default function AdminRoutes() {
                 {/* Stops List */}
                 <div className="mt-2">
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-semibold text-slate-900 border-b border-slate-200 pb-1 w-full flex justify-between items-center">
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-300 border-b border-slate-200 pb-1 w-full flex justify-between items-center">
                       <span>Stops ({currentStops.length})</span>
                       {!isViewMode && currentStops.length > 2 ? (
                         <div className="flex items-center gap-2">
@@ -568,12 +568,12 @@ export default function AdminRoutes() {
                           </button>
                         </div>
                       ) : isViewMode && currentStops.length > 2 ? (
-                        <span className="text-[10px] text-slate-400 italic">Click Edit Route to Auto-Sort</span>
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 italic">Click Edit Route to Auto-Sort</span>
                       ) : null}
                     </h3>
                   </div>
                   {currentStops.length === 0 ? (
-                     <p className="text-sm text-slate-500 italic">No stops added yet.</p>
+                     <p className="text-sm text-slate-500 dark:text-slate-400 italic">No stops added yet.</p>
                   ) : (
                     <ul className="space-y-2 max-h-48 overflow-y-auto pr-2">
                        {currentStops.map((stop, idx) => (
@@ -593,14 +593,14 @@ export default function AdminRoutes() {
                                 return newStops;
                               });
                            }}
-                           className={`flex justify-between items-center bg-slate-50 border border-slate-200 p-2 rounded-lg text-sm group ${!isViewMode ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                           className={`flex justify-between items-center bg-slate-50 dark:bg-slate-950 border border-slate-200 p-2 rounded-lg text-sm group ${!isViewMode ? 'cursor-grab active:cursor-grabbing' : ''}`}
                          >
                             <span 
-                              className="flex items-center gap-2 text-slate-700 font-medium cursor-pointer hover:text-emerald-700 w-full"
+                              className="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium cursor-pointer hover:text-emerald-700 w-full"
                               onClick={() => setSelectedStopLocation(stop.location)}
                               title="Click to view on map"
                             >
-                               {!isViewMode && <GripVertical className="h-4 w-4 text-slate-400 group-hover:text-emerald-500" />}
+                               {!isViewMode && <GripVertical className="h-4 w-4 text-slate-400 dark:text-slate-500 group-hover:text-emerald-500" />}
                                <span className="flex items-center justify-center bg-emerald-100 text-emerald-700 h-5 w-5 rounded-full text-xs shrink-0">{idx + 1}</span>
                                <span className="truncate max-w-[200px]">{stop.name}</span>
                             </span>
@@ -608,7 +608,7 @@ export default function AdminRoutes() {
                               <button 
                                  type="button" 
                                  onClick={() => removeStop(idx)}
-                                 className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity ml-2 shrink-0"
+                                 className="text-slate-400 dark:text-slate-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity ml-2 shrink-0"
                               >
                                  <Trash2 className="h-4 w-4" />
                               </button>
@@ -619,9 +619,9 @@ export default function AdminRoutes() {
                   )}
                   
                   {!isViewMode && (
-                    <div className={`mt-4 p-3 rounded-lg border flex gap-2 ${addingStopMode ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200'}`}>
+                    <div className={`mt-4 p-3 rounded-lg border flex gap-2 ${addingStopMode ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 dark:bg-slate-950 border-slate-200'}`}>
                        <input 
-                         className="flex-1 text-sm bg-white border border-slate-200 rounded px-2 py-1 outline-none focus:border-emerald-500"
+                         className="flex-1 text-sm bg-white dark:bg-slate-900 border border-slate-200 rounded px-2 py-1 outline-none focus:border-emerald-500"
                          placeholder="Stop name (optional)"
                          value={newStopName}
                          onChange={(e) => setNewStopName(e.target.value)}
@@ -629,7 +629,7 @@ export default function AdminRoutes() {
                        />
                        <button
                           type="button"
-                          className={`text-sm px-3 py-1.5 rounded font-medium transition-colors ${addingStopMode ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+                          className={`text-sm px-3 py-1.5 rounded font-medium transition-colors ${addingStopMode ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 dark:text-slate-300 hover:bg-slate-300'}`}
                           onClick={() => setAddingStopMode(!addingStopMode)}
                        >
                           {addingStopMode ? 'Click Map to Place...' : 'Add'}
@@ -644,11 +644,11 @@ export default function AdminRoutes() {
                  
                  {/* Map Search Bar */}
                  <div className="absolute top-4 right-4 z-[1000] w-64 flex flex-col gap-1">
-                    <div className="flex bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
+                    <div className="flex bg-white dark:bg-slate-900 rounded-lg shadow-md border border-slate-200 overflow-hidden">
                        <input 
                          type="text"
                          placeholder="Find location to pin..."
-                         className="flex-1 px-3 py-2 text-sm outline-none text-slate-700"
+                         className="flex-1 px-3 py-2 text-sm outline-none text-slate-700 dark:text-slate-300"
                          value={mapSearchQuery}
                          onChange={(e) => setMapSearchQuery(e.target.value)}
                          onKeyDown={(e) => {
@@ -661,7 +661,7 @@ export default function AdminRoutes() {
                        <button 
                          type="button" 
                          onClick={(e) => { e.preventDefault(); handleMapSearch(); }}
-                         className="px-3 text-slate-500 hover:text-emerald-600 bg-slate-50 border-l border-slate-200 transition-colors flex items-center justify-center" 
+                         className="px-3 text-slate-500 dark:text-slate-400 hover:text-emerald-600 bg-slate-50 dark:bg-slate-950 border-l border-slate-200 transition-colors flex items-center justify-center" 
                          disabled={isSearchingMap}
                        >
                          {isSearchingMap ? <Loader2 className="h-4 w-4 animate-spin text-emerald-600" /> : <Search className="h-4 w-4" />}
@@ -670,12 +670,12 @@ export default function AdminRoutes() {
                     
                     {/* Search Results Dropdown */}
                     {isDropdownOpen && searchResults.length > 0 && (
-                      <div className="bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden max-h-60 overflow-y-auto">
+                      <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 overflow-hidden max-h-60 overflow-y-auto">
                         {searchResults.map((result, i) => (
                            <button
                              key={i}
                              type="button"
-                             className="w-full text-left px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 border-b border-slate-100 last:border-0 hover:text-emerald-700 transition-colors"
+                             className="w-full text-left px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:bg-slate-950 border-b border-slate-100 last:border-0 hover:text-emerald-700 transition-colors"
                              title={result.display_name}
                              onClick={(e) => {
                                e.preventDefault();
@@ -686,7 +686,7 @@ export default function AdminRoutes() {
                              }}
                            >
                              <div className="font-semibold truncate">{result.display_name.split(',')[0]}</div>
-                             <div className="truncate text-[10px] text-slate-500">{result.display_name.substring(result.display_name.indexOf(',') + 1).trim()}</div>
+                             <div className="truncate text-[10px] text-slate-500 dark:text-slate-400">{result.display_name.substring(result.display_name.indexOf(',') + 1).trim()}</div>
                            </button>
                         ))}
                       </div>
@@ -730,7 +730,7 @@ export default function AdminRoutes() {
                        >
                           <Popup>
                              <div className="font-bold">{stop.name}</div>
-                             <div className="text-xs text-slate-500">Stop #{idx + 1}</div>
+                             <div className="text-xs text-slate-500 dark:text-slate-400">Stop #{idx + 1}</div>
                              {!isViewMode && <div className="text-[10px] text-emerald-600 mt-1 italic">Drag to adjust</div>}
                           </Popup>
                        </Marker>
@@ -754,9 +754,9 @@ export default function AdminRoutes() {
                     )}
                  </MapContainer>
                  {addingStopMode && (
-                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow border border-emerald-200 z-[1000] flex items-center gap-2">
+                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-slate-900 px-4 py-2 rounded-full shadow border border-emerald-200 z-[1000] flex items-center gap-2">
                      <MapPin className="h-4 w-4 text-emerald-500" />
-                     <span className="text-sm font-medium text-slate-700">Click anywhere on the map</span>
+                     <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Click anywhere on the map</span>
                    </div>
                  )}
               </div>
@@ -779,7 +779,7 @@ export default function AdminRoutes() {
                   <>
                     <button
                       type="button"
-                      className="px-5 py-2.5 rounded-xl font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors"
+                      className="px-5 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 transition-colors"
                       onClick={() => {
                         setIsModalOpen(false);
                         setCurrentStops([]);
@@ -801,7 +801,7 @@ export default function AdminRoutes() {
                   <>
                     <button
                       type="button"
-                      className="px-5 py-2.5 rounded-xl font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors"
+                      className="px-5 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 transition-colors"
                       onClick={() => {
                         setIsModalOpen(false);
                         setCurrentStops([]);

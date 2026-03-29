@@ -45,17 +45,17 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden w-full">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 relative overflow-hidden w-full">
       <div className="absolute top-[10%] left-[20%] w-[30rem] h-[30rem] bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
       <div className="absolute top-[30%] right-[10%] w-[30rem] h-[30rem] bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
 
-      <div className="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] z-10 border border-slate-100/50 transition-all duration-300">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] z-10 border border-slate-100/50 transition-all duration-300">
         <div className="flex flex-col items-center mb-10">
           <div className="bg-gradient-to-tr from-indigo-600 to-teal-500 p-3.5 rounded-2xl text-white mb-5 shadow-lg shadow-indigo-500/30">
             <Navigation className="h-8 w-8" />
           </div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h2>
-          <p className="text-slate-500 mt-2 text-sm font-medium">Join the iGPS Platform</p>
+          <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-300 tracking-tight">Create Account</h2>
+          <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm font-medium">Join the iGPS Platform</p>
         </div>
 
         {error && (
@@ -66,10 +66,10 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Username</label>
+          <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Username</label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                 <User className="h-5 w-5" />
               </div>
               <input
@@ -77,16 +77,16 @@ const Register = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all focus:shadow-md"
+                className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all focus:shadow-md"
                 placeholder="Choose a username"
               />
             </div>
           </div>
 
-          <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Password</label>
+          <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Password</label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                 <Lock className="h-5 w-5" />
               </div>
               <input
@@ -94,22 +94,22 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all focus:shadow-md"
+                className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all focus:shadow-md"
                 placeholder="Create a strong password"
               />
             </div>
           </div>
 
-          <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Account Role</label>
+          <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Account Role</label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="block w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all focus:shadow-md appearance-none"
+                className="block w-full pl-10 pr-10 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all focus:shadow-md appearance-none"
               >
                 <option value="client">Client (Rent Equipment)</option>
                 <option value="admin">Administrator (Manage System)</option>
@@ -119,12 +119,12 @@ const Register = () => {
 
           {role === 'admin' && (
             <div className="space-y-4 pt-4 mt-4 border-t border-slate-200">
-              <h3 className="text-sm font-bold text-slate-700">Company Details</h3>
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">Company Details</h3>
               
-              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Company Name</label>
+              <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Company Name</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                     <Building className="h-5 w-5" />
                   </div>
                   <input
@@ -132,55 +132,55 @@ const Register = () => {
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+                    className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
                     placeholder="E.g. Acme Transport"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Location(s)</label>
+              <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Location(s)</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <input
                     type="text"
                     value={locations}
                     onChange={(e) => setLocations(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+                    className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
                     placeholder="City, State"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Phone Number</label>
+              <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Phone Number</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                     <Phone className="h-5 w-5" />
                   </div>
                   <input
                     type="text"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
+                    className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all"
                     placeholder="+1 234 567 8900"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5 bg-slate-50 p-2 rounded-xl">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Description</label>
+              <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-2 rounded-xl">
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">Description</label>
                 <div className="relative">
-                  <div className="absolute top-3 left-3 pointer-events-none text-slate-400">
+                  <div className="absolute top-3 left-3 pointer-events-none text-slate-400 dark:text-slate-500">
                     <FileText className="h-5 w-5" />
                   </div>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={3}
-                    className="block w-full pl-10 pr-3 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all resize-none"
+                    className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all resize-none"
                     placeholder="Short description of your company..."
                   />
                 </div>
@@ -200,7 +200,7 @@ const Register = () => {
           </div>
         </form>
 
-        <p className="mt-8 text-center text-sm text-slate-500 font-medium">
+        <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400 font-medium">
           Already have an account?{' '}
           <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
             Sign in instead

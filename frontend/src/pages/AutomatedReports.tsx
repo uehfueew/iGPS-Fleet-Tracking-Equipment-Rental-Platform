@@ -4,6 +4,7 @@ import api from '../services/api';
 import { FileText, Trash2, Clock, Mail, BarChart3, Download, RefreshCw, Calendar, Car, Plus, ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
 import { format, subDays, startOfMonth, startOfYear } from 'date-fns';
+import { TableVirtuoso } from 'react-virtuoso';
 
 interface ReportTask {
   id: number;
@@ -30,20 +31,20 @@ function CustomSelect({ value, options, onChange, fullWidth = false }: { value: 
   return (
     <div className="relative w-full">
       <div 
-        className={`appearance-none bg-slate-50 border border-slate-200 text-slate-700 font-semibold py-2 pl-4 pr-10 rounded-lg focus-within:ring-2 focus-within:ring-emerald-500 cursor-pointer outline-none text-sm transition-all shadow-sm flex items-center justify-between ${fullWidth ? 'w-full' : 'sm:w-44'}`}
+        className={`appearance-none bg-slate-50 dark:bg-slate-950 border border-slate-200 text-slate-700 dark:text-slate-300 font-semibold py-2 pl-4 pr-10 rounded-lg focus-within:ring-2 focus-within:ring-emerald-500 cursor-pointer outline-none text-sm transition-all shadow-sm flex items-center justify-between ${fullWidth ? 'w-full' : 'sm:w-44'}`}
         onClick={() => setIsOpen(!isOpen)}
         tabIndex={0}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
       >
         <span className="truncate">{selectedLabel}</span>
-        <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`h-4 w-4 text-slate-500 dark:text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </div>
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full min-w-[160px] bg-white border border-slate-200 rounded-lg shadow-xl overflow-hidden py-1">
+        <div className="absolute z-50 mt-1 w-full min-w-[160px] bg-white dark:bg-slate-900 border border-slate-200 rounded-lg shadow-xl overflow-hidden py-1">
           {options.map(opt => (
             <div 
               key={opt.value}
-              className={`px-4 py-2 cursor-pointer hover:bg-emerald-50 transition-colors text-sm ${value === opt.value ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-slate-600 font-medium'}`}
+              className={`px-4 py-2 cursor-pointer hover:bg-emerald-50 transition-colors text-sm ${value === opt.value ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-slate-600 dark:text-slate-400 font-medium'}`}
               onClick={() => { onChange(opt.value); setIsOpen(false); }}
             >
               {opt.label}
@@ -206,25 +207,25 @@ export default function AutomatedReports() {
   };
 
   return (
-    <div className="p-8 h-full bg-slate-50/50 overflow-y-auto w-full">
+    <div className="p-8 h-full bg-slate-50/50 dark:bg-slate-950/50 overflow-y-auto w-full">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 border-b-2 border-emerald-500 pb-2 inline-flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-300 border-b-2 border-emerald-500 pb-2 inline-flex items-center gap-2">
               <BarChart3 className="text-emerald-600" /> Reports & Analytics
             </h1>
-            <p className="text-slate-500 mt-2">Generate historical insights, dispatch scheduled summaries, and export data.</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-2">Generate historical insights, dispatch scheduled summaries, and export data.</p>
           </div>
           
-          <div className="flex bg-white rounded-lg p-1 border border-slate-200 shadow-sm">
+          <div className="flex bg-white dark:bg-slate-900 rounded-lg p-1 border border-slate-200 shadow-sm">
              <button 
-               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'analytics' ? 'bg-slate-100 text-emerald-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'analytics' ? 'bg-slate-100 text-emerald-700 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300'}`}
                onClick={() => setActiveTab('analytics')}
              >
                Reports Generator
              </button>
              <button 
-               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'automation' ? 'bg-slate-100 text-emerald-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'automation' ? 'bg-slate-100 text-emerald-700 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300'}`}
                onClick={() => setActiveTab('automation')}
              >
                Automation Tasks
@@ -234,9 +235,9 @@ export default function AutomatedReports() {
 
         {activeTab === 'analytics' && (
            <div className="space-y-6">
-              <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+              <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200">
                 <div className="flex items-center gap-3">
-                  <Calendar className="text-slate-400 h-5 w-5" />
+                  <Calendar className="text-slate-400 dark:text-slate-500 h-5 w-5" />
                   <CustomSelect 
                     value={dateRange} 
                     options={[
@@ -252,7 +253,7 @@ export default function AutomatedReports() {
                 <div className="flex gap-3">
                   <button 
                     onClick={fetchAnalytics}
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors font-medium"
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors font-medium"
                     disabled={reportLoading}
                   >
                     <RefreshCw className={`h-4 w-4 ${reportLoading ? 'animate-spin' : ''}`} /> Sync
@@ -267,15 +268,15 @@ export default function AutomatedReports() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-                    <h3 className="text-sm font-bold text-slate-800 mb-4 inline-flex items-center gap-2">
+                 <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 p-5">
+                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-4 inline-flex items-center gap-2">
                        <Car className="h-4 w-4 text-emerald-500" /> Fleet Distance Traveled (Top 10)
                     </h3>
                     <div className="h-64">
                       {reportLoading ? (
-                        <div className="h-full flex items-center justify-center text-slate-400 text-sm">Crunching data...</div>
+                        <div className="h-full flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">Crunching data...</div>
                       ) : chartData.length === 0 ? (
-                        <div className="h-full flex items-center justify-center text-slate-400 text-sm">No activity recorded.</div>
+                        <div className="h-full flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">No activity recorded.</div>
                       ) : (
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -290,15 +291,15 @@ export default function AutomatedReports() {
                     </div>
                  </div>
 
-                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-                    <h3 className="text-sm font-bold text-slate-800 mb-4 inline-flex items-center gap-2">
+                 <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 p-5">
+                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-4 inline-flex items-center gap-2">
                        <BarChart3 className="h-4 w-4 text-indigo-500" /> Fuel Consumption Profile
                     </h3>
                     <div className="h-64">
                       {reportLoading ? (
-                        <div className="h-full flex items-center justify-center text-slate-400 text-sm">Crunching data...</div>
+                        <div className="h-full flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">Crunching data...</div>
                       ) : chartData.length === 0 ? (
-                        <div className="h-full flex items-center justify-center text-slate-400 text-sm">No fuel records.</div>
+                        <div className="h-full flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">No fuel records.</div>
                       ) : (
                         <ResponsiveContainer width="100%" height="100%">
                           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -320,38 +321,38 @@ export default function AutomatedReports() {
                  </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
-                          <th className="p-4 font-semibold">Vehicle</th>
-                          <th className="p-4 font-semibold">License Plate</th>
-                          <th className="p-4 font-semibold">Distance Traveled</th>
-                          <th className="p-4 font-semibold">Est. Fuel Consumed</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                         {reportLoading ? (
-                            <tr><td colSpan={4} className="p-8 text-center text-slate-400 text-sm">Building matrices...</td></tr>
-                         ) : vehicleReports.length === 0 ? (
-                            <tr><td colSpan={4} className="p-8 text-center text-slate-400 text-sm">No telemetry matching query.</td></tr>
-                         ) : (
-                            vehicleReports.map((r, i) => (
-                              <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                                <td className="p-4 text-sm font-medium text-slate-800">{r.vehicleName}</td>
-                                <td className="p-4">
-                                  <span className="inline-flex px-2 py-1 text-[10px] font-mono font-bold bg-slate-100 text-slate-600 rounded border border-slate-200 shadow-sm uppercase tracking-widest whitespace-nowrap">
-                                        {r.licensePlate}
-                                  </span>
-                                </td>
-                                <td className="p-4 text-sm tracking-tight font-medium text-slate-700">{r.totalDistance} <span className="text-slate-400 text-xs">km</span></td>
-                                <td className="p-4 text-sm tracking-tight font-medium text-slate-700">{r.fuelConsumption} <span className="text-slate-400 text-xs">Liters</span></td>
-                              </tr>
-                            ))
-                         )}
-                      </tbody>
-                    </table>
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 overflow-hidden h-fit flex-1">
+                 <div style={{ height: "400px" }}>
+                    {reportLoading ? (
+                       <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-sm h-full flex items-center justify-center">Building matrices...</div>
+                    ) : vehicleReports.length === 0 ? (
+                       <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-sm h-full flex items-center justify-center">No telemetry matching query.</div>
+                    ) : (
+                       <TableVirtuoso
+                          style={{ height: "100%", width: "100%" }}
+                          data={vehicleReports}
+                          fixedHeaderContent={() => (
+                             <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
+                               <th className="p-4 font-semibold text-left">Vehicle</th>
+                               <th className="p-4 font-semibold text-left">License Plate</th>
+                               <th className="p-4 font-semibold text-left">Distance Traveled</th>
+                               <th className="p-4 font-semibold text-left">Est. Fuel Consumed</th>
+                             </tr>
+                          )}
+                          itemContent={(_index, r) => (
+                             <>
+                               <td className="p-4 text-sm font-medium text-slate-800 dark:text-slate-200 border-b border-slate-100">{r.vehicleName}</td>
+                               <td className="p-4 border-b border-slate-100">
+                                 <span className="inline-flex px-2 py-1 text-[10px] font-mono font-bold bg-slate-100 text-slate-600 dark:text-slate-400 rounded border border-slate-200 shadow-sm uppercase tracking-widest whitespace-nowrap">
+                                       {r.licensePlate}
+                                 </span>
+                               </td>
+                               <td className="p-4 text-sm tracking-tight font-medium text-slate-700 dark:text-slate-300 border-b border-slate-100">{r.totalDistance} <span className="text-slate-400 dark:text-slate-500 text-xs">km</span></td>
+                               <td className="p-4 text-sm tracking-tight font-medium text-slate-700 dark:text-slate-300 border-b border-slate-100">{r.fuelConsumption} <span className="text-slate-400 dark:text-slate-500 text-xs">Liters</span></td>
+                             </>
+                          )}
+                       />
+                    )}
                  </div>
               </div>
            </div>
@@ -360,7 +361,7 @@ export default function AutomatedReports() {
         {activeTab === 'automation' && (
            <div className="space-y-6">
                <div className="flex justify-between items-center mb-2">
-                 <p className="text-sm text-slate-500">Configure the system to autonomously email PDF/CSV fleet reports on a recurring schedule.</p>
+                 <p className="text-sm text-slate-500 dark:text-slate-400">Configure the system to autonomously email PDF/CSV fleet reports on a recurring schedule.</p>
                  <button
                     onClick={() => setIsModalOpen(true)}
                     className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition shadow-sm font-medium text-sm"
@@ -371,15 +372,15 @@ export default function AutomatedReports() {
 
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                  {tasksLoading ? (
-                    <div className="col-span-full py-12 text-center text-slate-400">Loading automated tasks...</div>
+                    <div className="col-span-full py-12 text-center text-slate-400 dark:text-slate-500">Loading automated tasks...</div>
                  ) : tasks.length === 0 ? (
-                    <div className="col-span-full py-12 text-center text-slate-400 bg-white rounded-xl border border-slate-200 shadow-sm border-dashed">
-                      <FileText className="h-8 w-8 mx-auto mb-3 text-slate-300" />
+                    <div className="col-span-full py-12 text-center text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 shadow-sm border-dashed">
+                      <FileText className="h-8 w-8 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
                       No automation tasks configured.
                     </div>
                  ) : (
                     tasks.map(task => (
-                      <div key={task.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 group flex flex-col justify-between">
+                      <div key={task.id} className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 p-5 group flex flex-col justify-between">
                          <div>
                             <div className="flex justify-between items-start mb-3">
                               <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded text-[10px] font-bold tracking-wider uppercase border border-emerald-100 flex items-center gap-1.5">
@@ -387,20 +388,20 @@ export default function AutomatedReports() {
                               </span>
                               <button 
                                 onClick={() => handleDeleteTask(task.id)}
-                                className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="text-slate-400 dark:text-slate-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             </div>
-                            <h3 className="font-bold text-slate-900 mb-1">{task.name}</h3>
+                            <h3 className="font-bold text-slate-900 dark:text-slate-300 mb-1">{task.name}</h3>
                             <div className="mb-2">
-                              <p className={`text-xs text-slate-500 font-mono bg-slate-50 p-2 rounded border border-slate-100 transition-all duration-300 ${expandedEmailsIds.includes(task.id) ? 'max-h-48 overflow-y-auto break-words whitespace-pre-wrap' : 'truncate'}`} title={task.emailList}>
+                              <p className={`text-xs text-slate-500 dark:text-slate-400 font-mono bg-slate-50 dark:bg-slate-950 p-2 rounded border border-slate-100 transition-all duration-300 ${expandedEmailsIds.includes(task.id) ? 'max-h-48 overflow-y-auto break-words whitespace-pre-wrap' : 'truncate'}`} title={task.emailList}>
                                  To: {task.emailList}
                               </p>
                               {task.emailList && task.emailList.length > 30 && (
                                 <button
                                   onClick={() => setExpandedEmailsIds(prev => prev.includes(task.id) ? prev.filter(id => id !== task.id) : [...prev, task.id])}
-                                  className="text-[10px] text-slate-500 hover:text-slate-700 font-medium tracking-wide uppercase mt-1"
+                                  className="text-[10px] text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300 font-medium tracking-wide uppercase mt-1"
                                 >
                                   {expandedEmailsIds.includes(task.id) ? 'Show Less' : 'View All Emails'}
                                 </button>
@@ -413,7 +414,7 @@ export default function AutomatedReports() {
                               <Plus className="h-3 w-3" /> Add Email
                             </button>
                          </div>
-                         <div className="text-xs text-slate-400 pt-3 border-t border-slate-100 flex items-center justify-between">
+                         <div className="text-xs text-slate-400 dark:text-slate-500 pt-3 border-t border-slate-100 flex items-center justify-between">
                             Type: {task.type.replace('_', ' ')}
                             <span className="flex items-center gap-1 text-emerald-600">
                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div> Active
@@ -429,12 +430,12 @@ export default function AutomatedReports() {
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create Automation Task">
           <form onSubmit={handleSubmitTask} className="w-[450px] p-2 flex flex-col gap-5">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Report Title</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Report Title</label>
               <input
                 type="text"
                 required
                 placeholder="e.g. Weekly Management Digest"
-                className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all"
+                className="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all"
                 value={formData.name}
                 onChange={e => setFormData({ ...formData, name: e.target.value })}
               />
@@ -442,7 +443,7 @@ export default function AutomatedReports() {
             
             <div className="grid grid-cols-2 gap-4">
                <div>
-                 <label className="block text-sm font-semibold text-slate-700 mb-1.5">Report Type</label>
+                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Report Type</label>
                  <CustomSelect 
                      fullWidth
                      value={formData.type}
@@ -455,7 +456,7 @@ export default function AutomatedReports() {
                    />
                </div>
                <div>
-                 <label className="block text-sm font-semibold text-slate-700 mb-1.5">Dispatch Schedule</label>
+                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Dispatch Schedule</label>
                  <CustomSelect 
                      fullWidth
                      value={simpleSchedule}
@@ -471,21 +472,21 @@ export default function AutomatedReports() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Recipient Emails</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Recipient Emails</label>
               <textarea
                 required
                 placeholder="john@example.com, manager@example.com..."
-                className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all resize-none h-24"
+                className="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all resize-none h-24"
                 value={formData.emailList}
                 onChange={e => setFormData({ ...formData, emailList: e.target.value })}
               />
-              <p className="text-[10px] text-slate-400 mt-2">Separate multiple email addresses with a comma.</p>
+              <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2">Separate multiple email addresses with a comma.</p>
             </div>
             
             <div className="pt-4 flex justify-end gap-3 mt-2 border-t border-slate-100">
               <button
                 type="button"
-                className="px-5 py-2.5 rounded-xl font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors text-sm"
+                className="px-5 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 transition-colors text-sm"
                 onClick={() => setIsModalOpen(false)}
               >
                 Cancel
@@ -503,12 +504,12 @@ export default function AutomatedReports() {
         <Modal isOpen={addEmailModal.isOpen} onClose={() => setAddEmailModal({isOpen: false, taskId: null})} title="Add Recipient">
           <form onSubmit={handleAddEmailSubmit} className="w-[350px] p-2 flex flex-col gap-4">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">New Email Address</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">New Email Address</label>
               <input
                 type="email"
                 required
                 placeholder="new.user@example.com"
-                className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all"
+                className="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all"
                 value={newEmail}
                 onChange={e => setNewEmail(e.target.value)}
               />
@@ -516,7 +517,7 @@ export default function AutomatedReports() {
             <div className="flex justify-end gap-3 mt-2 border-t border-slate-100 pt-4">
               <button
                 type="button"
-                className="px-4 py-2 rounded-xl font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 text-sm"
+                className="px-4 py-2 rounded-xl font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 text-sm"
                 onClick={() => setAddEmailModal({isOpen: false, taskId: null})}
               >
                 Cancel

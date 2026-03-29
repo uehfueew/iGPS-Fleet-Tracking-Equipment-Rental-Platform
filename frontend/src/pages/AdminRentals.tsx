@@ -128,11 +128,11 @@ const AdminRentals = () => {
 
   if (user?.role !== 'admin') {
     return (
-      <div className="flex h-full items-center justify-center bg-slate-50">
-         <div className="text-center bg-white p-12 rounded-2xl border border-slate-200 shadow-sm max-w-md">
+      <div className="flex h-full items-center justify-center bg-slate-50 dark:bg-slate-950">
+         <div className="text-center bg-white dark:bg-slate-900 p-12 rounded-2xl border border-slate-200 shadow-sm max-w-md">
             <ShieldAlert className="h-16 w-16 text-rose-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">Access Denied</h2>
-            <p className="text-slate-500">You do not have the required administrator privileges to view this page.</p>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2">Access Denied</h2>
+            <p className="text-slate-500 dark:text-slate-400">You do not have the required administrator privileges to view this page.</p>
          </div>
       </div>
     );
@@ -149,7 +149,7 @@ const AdminRentals = () => {
       case 'active':
         return <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">Active</span>;
       default:
-        return <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200">{status}</span>;
+        return <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 dark:text-slate-200 border border-slate-200">{status}</span>;
     }
   };
 
@@ -200,7 +200,7 @@ const AdminRentals = () => {
   };
 
   return (
-    <div className="flex h-full flex-col bg-slate-50 relative overflow-hidden">
+    <div className="flex h-full flex-col bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
       {/* Toast Notification */}
       <AnimatePresence>
         {message && (
@@ -220,14 +220,14 @@ const AdminRentals = () => {
         )}
       </AnimatePresence>
 
-      <div className="px-8 py-6 border-b border-slate-200 bg-white shadow-sm flex items-center justify-between relative z-10 shrink-0">
+      <div className="px-8 py-6 border-b border-slate-200 bg-white dark:bg-slate-900 shadow-sm flex items-center justify-between relative z-10 shrink-0">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-indigo-100 text-indigo-600 rounded-xl">
              <Settings className="h-6 w-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Manage Bookings & Fleet</h2>
-            <p className="text-sm text-slate-500 font-medium">Manage client requests and track your fleet's active status.</p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-300 tracking-tight">Manage Bookings & Fleet</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Manage client requests and track your fleet's active status.</p>
           </div>
         </div>
         
@@ -249,23 +249,23 @@ const AdminRentals = () => {
           )}
 
           {/* Fleet Status Section */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center gap-2">
-              <Car className="h-5 w-5 text-slate-500" />
-              <h3 className="text-lg font-bold text-slate-800">Fleet Availability Status</h3>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 dark:bg-slate-950 flex items-center gap-2">
+              <Car className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">Fleet Availability Status</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-white border-b border-slate-200">
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Vehicle</th>
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Current Status</th>
+                  <tr className="bg-white dark:bg-slate-900 border-b border-slate-200">
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Vehicle</th>
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Current Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {equipmentList.map(eq => (
-                    <tr key={eq.id} className="hover:bg-slate-50/50 transition-colors group">
-                      <td className="px-6 py-4 text-sm text-slate-900 font-bold">
+                    <tr key={eq.id} className="hover:bg-slate-50/50 dark:bg-slate-950/50 transition-colors group">
+                      <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-300 font-bold">
                         {eq.name}
                         {getOwnershipBadge(eq.description)}
                       </td>
@@ -276,7 +276,7 @@ const AdminRentals = () => {
                   ))}
                   {equipmentList.length === 0 && (
                     <tr>
-                      <td colSpan={2} className="px-6 py-12 text-center text-slate-500 font-medium">
+                      <td colSpan={2} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400 font-medium">
                         No vehicles found in fleet.
                       </td>
                     </tr>
@@ -287,35 +287,35 @@ const AdminRentals = () => {
           </div>
 
           {/* Rental Requests Section */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-slate-500" />
-              <h3 className="text-lg font-bold text-slate-800">Rental Requests History</h3>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 dark:bg-slate-950 flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">Rental Requests History</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-white border-b border-slate-200">
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Equipment</th>
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Client</th>
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Dates</th>
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                  <tr className="bg-white dark:bg-slate-900 border-b border-slate-200">
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">ID</th>
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Equipment</th>
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Client</th>
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Dates</th>
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {rentals.map(rental => (
-                    <tr key={rental.id} className="hover:bg-slate-50/50 transition-colors group">
-                      <td className="px-6 py-4 text-sm text-slate-600 font-medium">#{rental.id}</td>
-                      <td className="px-6 py-4 text-sm text-slate-900 font-bold">
+                    <tr key={rental.id} className="hover:bg-slate-50/50 dark:bg-slate-950/50 transition-colors group">
+                      <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">#{rental.id}</td>
+                      <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-300 font-bold">
                         {rental.equipment?.name || 'Unknown'}
                         {rental.equipment && getOwnershipBadge(rental.equipment.description)}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-600">{rental.client?.username || 'Unknown'}</td>
-                      <td className="px-6 py-4 text-sm text-slate-600">
+                      <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">{rental.client?.username || 'Unknown'}</td>
+                      <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
                         <div className="flex items-center gap-2">
-                           <Calendar className="h-4 w-4 text-slate-400" />
+                           <Calendar className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                            {format(new Date(rental.startDate), 'MMM dd')} - {format(new Date(rental.endDate), 'MMM dd, yyyy')}
                         </div>
                       </td>
@@ -341,14 +341,14 @@ const AdminRentals = () => {
                             </button>
                           </div>
                         ) : (
-                          <span className="text-xs text-slate-400 font-medium italic">Processed</span>
+                          <span className="text-xs text-slate-400 dark:text-slate-500 font-medium italic">Processed</span>
                         )}
                       </td>
                     </tr>
                   ))}
                   {rentals.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-slate-500 font-medium">
+                      <td colSpan={6} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400 font-medium">
                         No rental requests found.
                       </td>
                     </tr>
@@ -378,7 +378,7 @@ const AdminRentals = () => {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none"
             >
-              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden pointer-events-auto flex flex-col max-h-[90vh]">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden pointer-events-auto flex flex-col max-h-[90vh]">
                 <div className="bg-gradient-to-r from-blue-700 to-indigo-700 p-6 flex justify-between items-center text-white shrink-0">
                   <div>
                     <h3 className="text-2xl font-bold">Add External Vehicle</h3>
@@ -394,13 +394,13 @@ const AdminRentals = () => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Name / Model</label>
-                        <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Vehicle Name / Model</label>
+                        <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500" />
                       </div>
 
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Type</label>
-                        <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-white">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Vehicle Type</label>
+                        <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900">
                           <option value="Car">Standard Car</option>
                           <option value="Truck">Moving Truck / Pickup</option>
                           <option value="Van">Van</option>
@@ -412,36 +412,36 @@ const AdminRentals = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">License Plate / ID</label>
-                        <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">License Plate / ID</label>
+                        <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500" />
                       </div>
                       
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Manufacturing Year</label>
-                        <input type="number" min="1990" max="2027" value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Manufacturing Year</label>
+                        <input type="number" min="1990" max="2027" value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500" />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-sm font-semibold text-gray-700 block mb-2">Owner Full Name / Company</label>
-                      <input type="text" required value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="John Doe Logistics" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                      <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Owner Full Name / Company</label>
+                      <input type="text" required value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="John Doe Logistics" className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500" />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-xl border border-gray-100 dark:border-slate-800">
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Available From</label>
-                        <input type="date" required value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Available From</label>
+                        <input type="date" required value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500" />
                       </div>
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Available Until</label>
-                        <input type="date" required value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Available Until</label>
+                        <input type="date" required value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500" />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Currency</label>
-                        <select required value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-white">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Currency</label>
+                        <select required value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900">
                           <option value="USD">USD ($)</option>
                           <option value="EUR">EUR (€)</option>
                           <option value="GBP">GBP (£)</option>
@@ -449,17 +449,17 @@ const AdminRentals = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="text-sm font-semibold text-gray-700 block mb-2">Daily Rate</label>
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Daily Rate</label>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">$</span>
-                          <input type="number" required min="1" step="0.01" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="0.00" className="w-full pl-8 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 font-bold text-lg" />
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-slate-400 font-bold">$</span>
+                          <input type="number" required min="1" step="0.01" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="0.00" className="w-full pl-8 pr-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 font-bold text-lg" />
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-sm font-semibold text-gray-700 block mb-2">Additional Specifications</label>
-                      <textarea rows={3} value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Color, specialized tools included, damage notes..." className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 resize-none" />
+                      <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 block mb-2">Additional Specifications</label>
+                      <textarea rows={3} value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Color, specialized tools included, damage notes..." className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 resize-none" />
                     </div>
 
                     <button type="submit" className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-lg shadow-md hover:shadow-xl transition-all transform hover:-translate-y-0.5">

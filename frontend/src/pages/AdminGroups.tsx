@@ -75,8 +75,8 @@ const GroupNodeItem: React.FC<GroupNodeProps> = ({
           initial={false}
           className={`
               relative flex flex-col sm:flex-row sm:items-center justify-between p-4 my-3
-              bg-white rounded-2xl shadow-sm border cursor-pointer
-              ${level === 0 ? 'border-l-4 border-l-indigo-500 border-gray-200' : 'border-gray-100'}
+              bg-white dark:bg-slate-900 rounded-2xl shadow-sm border cursor-pointer
+              ${level === 0 ? 'border-l-4 border-l-indigo-500 border-gray-200 dark:border-slate-800' : 'border-gray-100 dark:border-slate-800'}
               hover:shadow-md transition-all group/node
           `}
           style={{ marginLeft: `${level * 32}px`, width: `calc(100% - ${level * 32}px)` }}
@@ -88,7 +88,7 @@ const GroupNodeItem: React.FC<GroupNodeProps> = ({
                     e.stopPropagation();
                     onToggle(group.id);
                   }}
-                  className={`w-6 h-6 shrink-0 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-500 transition-colors ${!hasChildren ? 'opacity-0 cursor-default' : ''}`}
+                  className={`w-6 h-6 shrink-0 flex items-center justify-center rounded-md hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 dark:text-slate-400 transition-colors ${!hasChildren ? 'opacity-0 cursor-default' : ''}`}
                   disabled={!hasChildren}
               >
                   {hasChildren ? (isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />) : null}
@@ -101,11 +101,11 @@ const GroupNodeItem: React.FC<GroupNodeProps> = ({
               </div>
 
               <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2 truncate">
+                  <h3 className="font-bold text-gray-900 dark:text-slate-300 text-lg flex items-center gap-2 truncate">
                       {group.name}
                   </h3>
                   {group.description && (
-                    <div className="text-sm text-gray-500 mt-0.5 leading-relaxed">
+                    <div className="text-sm text-gray-500 dark:text-slate-400 mt-0.5 leading-relaxed">
                         <span className="inline break-words">
                             {displayDescription}
                         </span>
@@ -128,26 +128,26 @@ const GroupNodeItem: React.FC<GroupNodeProps> = ({
           {/* Right side actions & stats */}
           <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-end pl-14 sm:pl-0 shrink-0">
               <div className="flex gap-2 sm:gap-3">
-                  <span title={`Direct: ${directVehiclesCount} | Inherited: ${inheritedVehicles.length}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 text-sm font-medium rounded-lg border border-gray-200">
+                  <span title={`Direct: ${directVehiclesCount} | Inherited: ${inheritedVehicles.length}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 text-sm font-medium rounded-lg border border-gray-200 dark:border-slate-800">
                       <Car className="w-4 h-4 text-blue-500" /> {totalVehicles}
                   </span>
-                  <span title="Direct Subgroups" className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 text-sm font-medium rounded-lg border border-gray-200">
+                  <span title="Direct Subgroups" className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 text-sm font-medium rounded-lg border border-gray-200 dark:border-slate-800">
                       <Layers className="w-4 h-4 text-indigo-500" /> {childGroups.length}
                   </span>
               </div>
               
               {/* Actions group */}
               <div className="flex gap-1.5 opacity-100 sm:opacity-60 sm:group-hover/node:opacity-100 transition-opacity">
-                  <button onClick={(e) => { e.stopPropagation(); onManageVehicles(group); }} className="p-2 text-gray-600 hover:text-white hover:bg-blue-600 rounded-lg transition" title="Manage Vehicles">
+                  <button onClick={(e) => { e.stopPropagation(); onManageVehicles(group); }} className="p-2 text-gray-600 dark:text-slate-400 hover:text-white hover:bg-blue-600 rounded-lg transition" title="Manage Vehicles">
                       <Car className="w-4 h-4" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); onAddSubgroup(group); }} className="p-2 text-gray-600 hover:text-white hover:bg-emerald-600 rounded-lg transition" title="Add Subgroup">
+                  <button onClick={(e) => { e.stopPropagation(); onAddSubgroup(group); }} className="p-2 text-gray-600 dark:text-slate-400 hover:text-white hover:bg-emerald-600 rounded-lg transition" title="Add Subgroup">
                       <Plus className="w-4 h-4" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); onEdit(group); }} className="p-2 text-gray-600 hover:text-white hover:bg-indigo-600 rounded-lg transition" title="Edit Group">
+                  <button onClick={(e) => { e.stopPropagation(); onEdit(group); }} className="p-2 text-gray-600 dark:text-slate-400 hover:text-white hover:bg-indigo-600 rounded-lg transition" title="Edit Group">
                       <Edit2 className="w-4 h-4" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); onDelete(group.id); }} className="p-2 text-gray-600 hover:text-white hover:bg-red-600 rounded-lg transition" title="Delete Group">
+                  <button onClick={(e) => { e.stopPropagation(); onDelete(group.id); }} className="p-2 text-gray-600 dark:text-slate-400 hover:text-white hover:bg-red-600 rounded-lg transition" title="Delete Group">
                       <Trash2 className="w-4 h-4" />
                   </button>
               </div>
@@ -385,16 +385,16 @@ export default function AdminGroups() {
   }, [managingGroup, groups]);
 
   return (
-    <div className="p-6 md:p-8 h-full bg-slate-50 min-h-screen">
+    <div className="p-6 md:p-8 h-full bg-slate-50 dark:bg-slate-950 min-h-screen">
       <div className="max-w-[1400px] mx-auto space-y-6">
         
         {/* Header & Stats Dashboard */}
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8">
             <div className="xl:col-span-1 flex flex-col justify-center">
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900 flex items-center gap-3">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-slate-300 flex items-center gap-3">
                     Organization
                 </h1>
-                <p className="text-gray-500 mt-2 text-sm">Visualize and structure your entire fleet hierarchy dynamically.</p>
+                <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">Visualize and structure your entire fleet hierarchy dynamically.</p>
                 <div className="mt-4">
                     <button
                         onClick={handleOpenCreateTopLevel}
@@ -406,7 +406,7 @@ export default function AdminGroups() {
             </div>
 
             <div className="xl:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 relative overflow-hidden">
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm flex items-center gap-4 relative overflow-hidden">
                     <div className="absolute -right-4 -top-4 opacity-5">
                        <Network className="w-32 h-32" />
                     </div>
@@ -414,12 +414,12 @@ export default function AdminGroups() {
                         <Network className="w-7 h-7" />
                     </div>
                     <div>
-                        <p className="text-gray-500 font-medium text-sm">Top Level Regions</p>
-                        <p className="text-3xl font-bold text-gray-900">{topLevelCount}</p>
+                        <p className="text-gray-500 dark:text-slate-400 font-medium text-sm">Top Level Regions</p>
+                        <p className="text-3xl font-bold text-gray-900 dark:text-slate-300">{topLevelCount}</p>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 relative overflow-hidden">
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm flex items-center gap-4 relative overflow-hidden">
                     <div className="absolute -right-4 -top-4 opacity-5">
                        <Layers className="w-32 h-32" />
                     </div>
@@ -427,12 +427,12 @@ export default function AdminGroups() {
                         <Layers className="w-7 h-7" />
                     </div>
                     <div>
-                        <p className="text-gray-500 font-medium text-sm">Total Subgroups</p>
-                        <p className="text-3xl font-bold text-gray-900">{subGroupCount}</p>
+                        <p className="text-gray-500 dark:text-slate-400 font-medium text-sm">Total Subgroups</p>
+                        <p className="text-3xl font-bold text-gray-900 dark:text-slate-300">{subGroupCount}</p>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 relative overflow-hidden">
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm flex items-center gap-4 relative overflow-hidden">
                     <div className="absolute -right-4 -top-4 opacity-5">
                        <Activity className="w-32 h-32" />
                     </div>
@@ -440,31 +440,31 @@ export default function AdminGroups() {
                         <Car className="w-7 h-7" />
                     </div>
                     <div>
-                        <p className="text-gray-500 font-medium text-sm">Assigned Vehicles</p>
-                        <p className="text-3xl font-bold text-gray-900">{totalVehiclesAssigned}</p>
+                        <p className="text-gray-500 dark:text-slate-400 font-medium text-sm">Assigned Vehicles</p>
+                        <p className="text-3xl font-bold text-gray-900 dark:text-slate-300">{totalVehiclesAssigned}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         {/* Toolbar */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm">
             <div className="relative w-full sm:max-w-md">
-                <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500" />
                 <input 
                     type="text" 
                     placeholder="Search groups, regions, subdivisions..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                    className="w-full pl-11 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                 />
             </div>
             
             <div className="flex gap-3 w-full sm:w-auto">
-                <button onClick={() => setExpandedNodes(new Set(groups.map(g => g.id)))} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition shadow-sm">
+                <button onClick={() => setExpandedNodes(new Set(groups.map(g => g.id)))} className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-300 bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition shadow-sm">
                     Expand All
                 </button>
-                <button onClick={() => setExpandedNodes(new Set())} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition shadow-sm">
+                <button onClick={() => setExpandedNodes(new Set())} className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-300 bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition shadow-sm">
                     Collapse All
                 </button>
             </div>
@@ -477,12 +477,12 @@ export default function AdminGroups() {
                     <div className="animate-spin w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
                 </div>
             ) : topLevelNodes.length === 0 ? (
-                <div className="text-center p-16 bg-white shadow-sm border border-gray-100 rounded-3xl">
-                    <FolderGit2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <div className="text-center p-16 bg-white dark:bg-slate-900 shadow-sm border border-gray-100 dark:border-slate-800 rounded-3xl">
+                    <FolderGit2 className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-slate-300 mb-2">
                         {searchTerm ? 'No groups found matching search.' : 'Organization Empty'}
                     </h3>
-                    <p className="text-gray-500 max-w-md mx-auto">
+                    <p className="text-gray-500 dark:text-slate-400 max-w-md mx-auto">
                         {searchTerm ? 'Try adjusting your search criteria above.' : 'Start structuring your operations by creating a primary division.'}
                     </p>
                 </div>
@@ -519,32 +519,32 @@ export default function AdminGroups() {
             
             <div className="space-y-4 pt-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Group Designation Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1.5">Group Designation Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Northern Operations"
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 rounded-xl focus:bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Operational Details (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1.5">Operational Details (Optional)</label>
                 <textarea
                   placeholder="Briefly describe the responsibilities..."
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none min-h-[120px] resize-none"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 rounded-xl focus:bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 transition-all outline-none min-h-[120px] resize-none"
                   value={formData.description}
                   onChange={e => setFormData({ ...formData, description: e.target.value })}
                 />
               </div>
             </div>
             
-            <div className="pt-4 flex justify-end gap-3 border-t border-gray-100">
+            <div className="pt-4 flex justify-end gap-3 border-t border-gray-100 dark:border-slate-800">
               <button
                 type="button"
-                className="px-5 py-2.5 rounded-xl font-medium text-gray-700 hover:bg-gray-100 transition"
+                className="px-5 py-2.5 rounded-xl font-medium text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition"
                 onClick={() => setIsGroupModalOpen(false)}
               >
                 Cancel
@@ -573,7 +573,7 @@ export default function AdminGroups() {
                  </div>
               </div>
               <div className="flex justify-end gap-3 pt-2">
-                 <button type="button" onClick={() => setDeleteConfirmId(null)} className="px-5 py-2.5 rounded-xl font-medium text-gray-700 hover:bg-gray-100 transition">
+                 <button type="button" onClick={() => setDeleteConfirmId(null)} className="px-5 py-2.5 rounded-xl font-medium text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition">
                     Abort
                  </button>
                  <button type="button" onClick={confirmDelete} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-red-600 hover:bg-red-700 shadow-md shadow-red-200 transition flex items-center gap-2">
@@ -586,44 +586,44 @@ export default function AdminGroups() {
         {/* Vehicle Assignment Modal */}
         <Modal isOpen={isVehicleModalOpen} onClose={() => setIsVehicleModalOpen(false)} title={`Fleet Assignment: ${managingGroup?.name}`}>
            <div className="flex flex-col gap-6">
-              <div className="bg-gray-50/50 p-5 rounded-2xl border border-gray-200">
+              <div className="bg-gray-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-gray-200 dark:border-slate-800">
                 <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-bold text-sm text-gray-800 flex items-center gap-2">
+                    <h4 className="font-bold text-sm text-gray-800 dark:text-slate-200 flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-blue-500"></div> Connected Assets
                     </h4>
-                    <span className="text-xs font-semibold px-2 py-1 bg-gray-200 rounded-md text-gray-700">
+                    <span className="text-xs font-semibold px-2 py-1 bg-gray-200 rounded-md text-gray-700 dark:text-slate-300">
                         {(managingGroup?.vehicles?.length || 0) + inheritedModalVehicles.length}
                     </span>
                 </div>
                 {(!managingGroup?.vehicles?.length && inheritedModalVehicles.length === 0) ? (
-                   <div className="py-6 text-center border-2 border-dashed border-gray-200 rounded-xl">
-                       <Car className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                       <p className="text-sm text-gray-500 font-medium">No assets assigned</p>
+                   <div className="py-6 text-center border-2 border-dashed border-gray-200 dark:border-slate-800 rounded-xl">
+                       <Car className="w-8 h-8 text-gray-300 dark:text-slate-600 mx-auto mb-2" />
+                       <p className="text-sm text-gray-500 dark:text-slate-400 font-medium">No assets assigned</p>
                    </div>
                 ) : (
                    <ul className="space-y-2.5 max-h-[30vh] overflow-y-auto pr-2 custom-scrollbar">
                      <AnimatePresence>
                      {managingGroup?.vehicles?.map(v => (
-                        <motion.li initial={{opacity:0, x:-10}} animate={{opacity:1, x:0}} exit={{opacity:0, scale:0.95}} key={`dir-${v.id}`} className="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200 shadow-sm group/veh">
-                           <div className="flex items-center gap-3 text-sm font-semibold text-gray-900">
+                        <motion.li initial={{opacity:0, x:-10}} animate={{opacity:1, x:0}} exit={{opacity:0, scale:0.95}} key={`dir-${v.id}`} className="flex items-center justify-between bg-white dark:bg-slate-900 p-3 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm group/veh">
+                           <div className="flex items-center gap-3 text-sm font-semibold text-gray-900 dark:text-slate-300">
                              <div className="bg-blue-50 p-2 rounded-lg text-blue-600 border border-blue-100">
                                <Car className="w-4 h-4" />
                              </div>
                              <div>
                                  <div>{v.name}</div>
-                                 <div className="text-[11px] text-gray-400 uppercase tracking-wide">{v.licensePlate}</div>
+                                 <div className="text-[11px] text-gray-400 dark:text-slate-500 uppercase tracking-wide">{v.licensePlate}</div>
                              </div>
                            </div>
-                           <button type="button" onClick={() => removeVehicle(v.id)} className="text-gray-400 hover:text-white hover:bg-red-500 p-2 rounded-lg transition" title="Detach from group">
+                           <button type="button" onClick={() => removeVehicle(v.id)} className="text-gray-400 dark:text-slate-500 hover:text-white hover:bg-red-500 p-2 rounded-lg transition" title="Detach from group">
                              <X className="w-4 h-4" />
                            </button>
                         </motion.li>
                      ))}
                      
                      {inheritedModalVehicles.map(info => (
-                        <motion.li initial={{opacity:0, x:-10}} animate={{opacity:1, x:0}} exit={{opacity:0, scale:0.95}} key={`inh-${info.vehicle.id}`} className="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-200 shadow-sm">
-                           <div className="flex items-center gap-3 text-sm font-semibold text-gray-600">
-                             <div className="bg-white p-2 rounded-lg text-gray-400 border border-gray-200">
+                        <motion.li initial={{opacity:0, x:-10}} animate={{opacity:1, x:0}} exit={{opacity:0, scale:0.95}} key={`inh-${info.vehicle.id}`} className="flex items-center justify-between bg-gray-50 dark:bg-slate-800/50 p-3 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
+                           <div className="flex items-center gap-3 text-sm font-semibold text-gray-600 dark:text-slate-400">
+                             <div className="bg-white dark:bg-slate-900 p-2 rounded-lg text-gray-400 dark:text-slate-500 border border-gray-200 dark:border-slate-800">
                                <Car className="w-4 h-4" />
                              </div>
                              <div>
@@ -633,7 +633,7 @@ export default function AdminGroups() {
                                        via {info.sourceName}
                                      </span>
                                  </div>
-                                 <div className="text-[11px] text-gray-400 uppercase tracking-wide">{info.vehicle.licensePlate}</div>
+                                 <div className="text-[11px] text-gray-400 dark:text-slate-500 uppercase tracking-wide">{info.vehicle.licensePlate}</div>
                              </div>
                            </div>
                            {/* Inherited vehicles cannot be removed from here, they must be removed from their specific subgroup */}
@@ -646,28 +646,28 @@ export default function AdminGroups() {
 
               <div>
                 <div className="flex justify-between items-center mb-4 px-1">
-                    <h4 className="font-bold text-sm text-gray-800 flex items-center gap-2">
+                    <h4 className="font-bold text-sm text-gray-800 dark:text-slate-200 flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-emerald-500"></div> Available Pool
                     </h4>
-                    <span className="text-xs font-semibold px-2 py-1 bg-gray-200 text-gray-700 rounded-md">{availableVehicles.length}</span>
+                    <span className="text-xs font-semibold px-2 py-1 bg-gray-200 text-gray-700 dark:text-slate-300 rounded-md">{availableVehicles.length}</span>
                 </div>
                 
                 {availableVehicles.length === 0 ? (
-                   <div className="py-6 text-center bg-gray-50 rounded-xl border border-gray-100">
-                       <p className="text-sm text-gray-500 font-medium">No unassigned assets available globally.</p>
+                   <div className="py-6 text-center bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-slate-800">
+                       <p className="text-sm text-gray-500 dark:text-slate-400 font-medium">No unassigned assets available globally.</p>
                    </div>
                 ) : (
                    <ul className="space-y-2.5 max-h-[30vh] overflow-y-auto pr-2 custom-scrollbar">
                      <AnimatePresence>
                      {availableVehicles.map(v => (
-                        <motion.li initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0, scale:0.95}} key={v.id} className="flex items-center justify-between border border-gray-200 p-3 rounded-xl hover:bg-gray-50 transition bg-white shadow-sm">
-                           <div className="flex items-center gap-3 text-sm font-semibold text-gray-700">
-                                <div className="p-2 bg-gray-100 rounded-lg text-gray-500">
+                        <motion.li initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0, scale:0.95}} key={v.id} className="flex items-center justify-between border border-gray-200 dark:border-slate-800 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800/80 transition bg-white dark:bg-slate-900 shadow-sm">
+                           <div className="flex items-center gap-3 text-sm font-semibold text-gray-700 dark:text-slate-300">
+                                <div className="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg text-gray-500 dark:text-slate-400">
                                     <Car className="w-4 h-4" />
                                 </div>
                                 <div>
-                                    <div className="text-gray-900">{v.name}</div>
-                                    <div className="text-[11px] text-gray-400 uppercase tracking-wide">{v.licensePlate}</div>
+                                    <div className="text-gray-900 dark:text-slate-300">{v.name}</div>
+                                    <div className="text-[11px] text-gray-400 dark:text-slate-500 uppercase tracking-wide">{v.licensePlate}</div>
                                 </div>
                            </div>
                            <button type="button" onClick={() => assignVehicle(v.id)} className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-white px-3 py-2 bg-emerald-50 hover:bg-emerald-500 rounded-lg transition border border-emerald-100">

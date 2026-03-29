@@ -35,7 +35,9 @@ const scheduler_1 = require("./scheduler");
 const vehicleSchema = zod_1.z.object({
     name: zod_1.z.string().min(1),
     licensePlate: zod_1.z.string().min(1),
-    deviceId: zod_1.z.string().optional()
+    deviceId: zod_1.z.string().optional(),
+    routeId: zod_1.z.number().nullable().optional(),
+    groupId: zod_1.z.number().nullable().optional()
 });
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -124,7 +126,10 @@ app.post('/api/vehicles', auth_2.authenticateToken, (0, auth_2.requireRole)('adm
 // Get all vehicles
 app.get('/api/vehicles', auth_2.authenticateToken, async (req, res) => {
     try {
-        const vehicles = await db_1.prisma.vehicle.findMany();
+        const vehicles = await db_1.prisma.vehicle.findMany({
+            include: { route: true },
+            orderBy: { id: 'asc' }
+        });
         res.json(vehicles);
     }
     catch (err) {

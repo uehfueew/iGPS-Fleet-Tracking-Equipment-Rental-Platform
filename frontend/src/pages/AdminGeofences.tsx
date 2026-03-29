@@ -59,7 +59,7 @@ const AdminGeofences = () => {
                 if (gf.polygon) {
                     const latlngs = gf.polygon.map((p: any) => [p.lat || p[0], p.lng || p[1]]);
                     const poly = L.polygon(latlngs, { color: '#8b5cf6', fillColor: '#a78bfa', fillOpacity: 0.3, weight: 2 })
-                    .bindPopup(`<div class="font-bold text-slate-800 text-sm p-1">${gf.name}</div>`)
+                    .bindPopup(`<div class="font-bold text-slate-800 dark:text-slate-200 text-sm p-1">${gf.name}</div>`)
                     .addTo(leafletMap.current!);
                     (poly as any).gfId = gf.id;
                 }
@@ -244,27 +244,27 @@ const AdminGeofences = () => {
 
   if (user?.role !== 'admin') {
      return (
-      <div className="flex h-full items-center justify-center bg-slate-50">
-         <div className="text-center bg-white p-12 rounded-3xl border border-slate-200 shadow-xl max-w-md">
+      <div className="flex h-full items-center justify-center bg-slate-50 dark:bg-slate-950">
+         <div className="text-center bg-white dark:bg-slate-900 p-12 rounded-3xl border border-slate-200 shadow-xl max-w-md">
             <ShieldAlert className="h-20 w-20 text-rose-500 mx-auto mb-6" />
-            <h2 className="text-3xl font-extrabold text-slate-800 mb-3">Access Denied</h2>
-            <p className="text-slate-500 text-lg">You do not have the required administrator privileges to view this page.</p>
+            <h2 className="text-3xl font-extrabold text-slate-800 dark:text-slate-200 mb-3">Access Denied</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-lg">You do not have the required administrator privileges to view this page.</p>
          </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-slate-50 relative overflow-hidden">
-      <div className="w-80 sm:w-96 bg-white border-r border-slate-200 flex flex-col shadow-2xl z-[1000] relative">
-        <div className="p-8 border-b border-slate-100 bg-slate-50/50">
+    <div className="flex h-[calc(100vh-64px)] bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
+      <div className="w-80 sm:w-96 bg-white dark:bg-slate-900 border-r border-slate-200 flex flex-col shadow-2xl z-[1000] relative">
+        <div className="p-8 border-b border-slate-100 bg-slate-50/50 dark:bg-slate-950/50">
           <div className="flex items-center gap-4 mb-2">
             <div className="bg-purple-100 p-3 rounded-xl text-purple-600 shadow-inner">
               <MapIcon className="h-6 w-6" />
             </div>
-            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Geofences</h2>
+            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-300 tracking-tight">Geofences</h2>
           </div>
-          <p className="text-sm text-slate-500 font-medium ml-14">Draw and manage alert regions</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium ml-14">Draw and manage alert regions</p>
         </div>
         
         <div className="p-8 flex-1 overflow-y-auto space-y-8">
@@ -274,30 +274,30 @@ const AdminGeofences = () => {
           </div>
 
           <div>
-             <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-3">
+             <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-3">
                  <List className="h-4 w-4" /> Existing Areas ({geofences.length})
              </h3>
              {geofences.length === 0 ? (
                <div className="text-center py-8">
-                 <p className="text-slate-400 text-sm font-medium">No geofences defined yet.</p>
+                 <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No geofences defined yet.</p>
                </div>
              ) : (
                <ul className="space-y-3">
                  {geofences.map(gf => (
                    <li key={gf.id} 
                        onClick={() => handleGeofenceClick(gf)}
-                       className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm text-sm font-bold text-slate-700 flex items-center justify-between hover:border-purple-300 hover:shadow-md transition-all group cursor-pointer">
+                       className="p-4 bg-white dark:bg-slate-900 border border-slate-200 rounded-2xl shadow-sm text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between hover:border-purple-300 hover:shadow-md transition-all group cursor-pointer">
                      <span className="truncate pr-2">{gf.name}</span>
                      <div className="flex items-center gap-2">
                         <button 
                             onClick={(e) => { e.stopPropagation(); setEditGf(gf); setEditGfName(gf.name); setShowEditModal(true); }}
-                            className="bg-slate-100 px-2 py-1 rounded text-xs text-slate-500 hover:text-purple-600 hover:bg-purple-50 transition-colors opacity-0 group-hover:opacity-100"
+                            className="bg-slate-100 px-2 py-1 rounded text-xs text-slate-500 dark:text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-colors opacity-0 group-hover:opacity-100"
                         >
                             Edit
                         </button>
                         <button 
                             onClick={(e) => { e.stopPropagation(); handleDeleteGeofence(gf.id); }}
-                            className="bg-slate-100 px-2 py-1 rounded text-xs text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors opacity-0 group-hover:opacity-100"
+                            className="bg-slate-100 px-2 py-1 rounded text-xs text-slate-500 dark:text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors opacity-0 group-hover:opacity-100"
                         >
                             Delete
                         </button>
@@ -358,7 +358,7 @@ const AdminGeofences = () => {
                 }}
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-bold shadow-xl border-4 border-white/20 transition-all flex items-center gap-2 hover:scale-105"
               >
-                <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></div>
+                <div className="w-2.5 h-2.5 bg-white dark:bg-slate-900 rounded-full animate-pulse"></div>
                 Save Changes / Finish
               </button>
             </motion.div>
@@ -383,13 +383,13 @@ const AdminGeofences = () => {
                   exit={{ opacity: 0, scale: 0.95, y: 20 }}
                   className="fixed inset-0 z-[2010] flex items-center justify-center p-4 pointer-events-none"
                 >
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden pointer-events-auto border border-slate-100">
+                    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden pointer-events-auto border border-slate-100">
                         <div className="p-8">
                             <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
                                 <MapIcon className="w-8 h-8 text-purple-600" />
                             </div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">Save Geofence</h3>
-                            <p className="text-slate-500 mb-6 font-medium">Give this geographic boundary a distinct name so you can track when vehicles enter or exit.</p>
+                            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-300 mb-2">Save Geofence</h3>
+                            <p className="text-slate-500 dark:text-slate-400 mb-6 font-medium">Give this geographic boundary a distinct name so you can track when vehicles enter or exit.</p>
                             
                             <form onSubmit={handleCreateGeofence}>
                                 <input
@@ -397,7 +397,7 @@ const AdminGeofences = () => {
                                     required
                                     autoFocus
                                     placeholder="e.g., Downtown Warehouse"
-                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner mb-8"
+                                    className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 rounded-xl text-slate-900 dark:text-slate-300 font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner mb-8"
                                     value={gfName}
                                     onChange={(e) => setGfName(e.target.value)}
                                 />
@@ -405,7 +405,7 @@ const AdminGeofences = () => {
                                     <button
                                         type="button"
                                         onClick={handleCancelGeofence}
-                                        className="flex-1 px-6 py-4 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors"
+                                        className="flex-1 px-6 py-4 rounded-xl border border-slate-200 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:bg-slate-950 transition-colors"
                                     >
                                         Cancel
                                     </button>
@@ -441,19 +441,19 @@ const AdminGeofences = () => {
                   exit={{ opacity: 0, scale: 0.95, y: 20 }}
                   className="fixed inset-0 z-[2010] flex items-center justify-center p-4 pointer-events-none"
                 >
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden pointer-events-auto border border-slate-100">
+                    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden pointer-events-auto border border-slate-100">
                         <div className="p-8">
                             <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
                                 <List className="w-8 h-8 text-purple-600" />
                             </div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">Edit Geofence</h3>
+                            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-300 mb-2">Edit Geofence</h3>
                             
                             <form onSubmit={handleEditSubmit}>
                                 <input
                                     type="text"
                                     required
                                     autoFocus
-                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner mb-8 mt-4"
+                                    className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 rounded-xl text-slate-900 dark:text-slate-300 font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner mb-8 mt-4"
                                     value={editGfName}
                                     onChange={(e) => setEditGfName(e.target.value)}
                                 />
@@ -461,7 +461,7 @@ const AdminGeofences = () => {
                                     <button
                                         type="button"
                                         onClick={() => setShowEditModal(false)}
-                                        className="flex-1 px-6 py-4 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors"
+                                        className="flex-1 px-6 py-4 rounded-xl border border-slate-200 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:bg-slate-950 transition-colors"
                                     >
                                         Cancel
                                     </button>
