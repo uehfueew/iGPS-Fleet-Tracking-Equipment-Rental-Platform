@@ -45,4 +45,18 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Update automated report
+router.patch('/:id', async (req, res) => {
+  try {
+    const { emailList } = req.body;
+    const report = await prisma.automatedReport.update({
+      where: { id: parseInt(req.params.id) },
+      data: { emailList }
+    });
+    res.json(report);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

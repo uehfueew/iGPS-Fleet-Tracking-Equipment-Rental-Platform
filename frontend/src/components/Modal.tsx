@@ -27,7 +27,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden pointer-events-auto border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden pointer-events-auto border border-gray-100" style={{ maxWidth: 'fit-content' }}>
               <div className="flex justify-between items-center p-6 border-b border-gray-100">
                 <h3 className="text-xl font-bold text-gray-900">{title}</h3>
                 <button

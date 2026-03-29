@@ -1,11 +1,71 @@
 import cron from 'node-cron';
 import cronParser from 'cron-parser';
 import { prisma } from './db';
+import nodemailer from 'nodemailer';
 
-// A mock email sender for now
+let transporter: nodemailer.Transporter | null = null;
+
+async function initMailer() {
+  if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+    transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: process.env.SMTP_PORT === '465',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+    console.log('[MAILER] Connected to Custom SMTP server.');
+  } else {
+    // Fallback: Create ethereal testing account
+    console.log('[MAILER] No SMTP config found. Generating an Ethereal test email account for development...');
+    const testAccount = await nodemailer.createTestAccount();
+    transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
+    console.log('[MAILER] Ethereal account ready. Check terminal for email URLs.');
+  }
+}
+
+initMailer();
+
+// A generic email sender
 async function sendReportEmail(emails: string[], reportName: string, data: any) {
-  console.log(`[EMAIL MOCK] Sending ${reportName} to ${emails.join(', ')}`);
-  console.log(`[EMAIL MOCK] Data preview:`, JSON.stringify(data).substring(0, 100), '...');
+  if (!transporter) return;
+  
+  const htm = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto;">
+      <h2 style="color: #10B981;">iGPS Platform - ${reportName}</h2>
+      <p>Your automated report is ready.</p>
+      <div style="background: #F8FAFC; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <pre style="font-size: 11px; white-space: pre-wrap;">${JSON.stringify(data, null, 2)}</pre>
+      </div>
+    </div>
+  `;
+
+  try {
+    const info = await transporter.sendMail({
+      from: '"iGPS System" <reports@igps-platform.local>',
+      to: emails.join(', '),
+      subject: `Automated Report: ${reportName}`,
+      text: `Your automated report is ready. \n\nData: ${JSON.stringify(data)}`,
+      html: htm,
+    });
+    
+    console.log(`[EMAIL] Sent report '${reportName}' to ${emails.join(', ')} (Message ID: ${info.messageId})`);
+    if (info.messageId && nodemailer.getTestMessageUrl(info)) {
+      console.log(`[EMAIL PREVIEW] View the email here: ${nodemailer.getTestMessageUrl(info)}`);
+    }
+  } catch (err) {
+    console.error('[EMAIL ERROR] Failed to send report: ', err);
+  }
 }
 
 export const initScheduler = () => {

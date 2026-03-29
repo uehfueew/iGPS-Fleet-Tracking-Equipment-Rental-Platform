@@ -32,7 +32,9 @@ import { initScheduler } from './scheduler';
 const vehicleSchema = z.object({
   name: z.string().min(1),
   licensePlate: z.string().min(1),
-  deviceId: z.string().optional()
+  deviceId: z.string().optional(),
+  routeId: z.number().nullable().optional(),
+  groupId: z.number().nullable().optional()
 });
 
 dotenv.config();
@@ -133,7 +135,10 @@ app.post('/api/vehicles', authenticateToken, requireRole('admin'), async (req, r
 // Get all vehicles
 app.get('/api/vehicles', authenticateToken, async (req, res) => {
   try {
-    const vehicles = await prisma.vehicle.findMany();
+    const vehicles = await prisma.vehicle.findMany({
+      include: { route: true },
+      orderBy: { id: 'asc' }
+    });
     res.json(vehicles);
   } catch (err: any) {
     res.status(500).json({ error: err.message });

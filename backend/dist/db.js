@@ -7,7 +7,7 @@ const redis_1 = require("redis");
 exports.prisma = new client_1.PrismaClient();
 exports.pgPool = new pg_1.Pool({
     host: 'localhost',
-    port: 5432,
+    port: 5434,
     user: 'igps',
     password: 'igps123',
     database: 'igps_db',

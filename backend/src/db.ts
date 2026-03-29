@@ -6,7 +6,7 @@ export const prisma = new PrismaClient();
 
 export const pgPool = new Pool({
   host: 'localhost',
-  port: 5432,
+  port: 5434,
   user: 'igps',
   password: 'igps123',
   database: 'igps_db',

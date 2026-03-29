@@ -17,4 +17,29 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
+router.put('/:id/read', authenticateToken, async (req, res) => {
+  try {
+    const alertId = parseInt(req.params.id as string);
+    const updated = await prisma.alert.update({
+      where: { id: alertId },
+      data: { isRead: true }
+    });
+    res.json(updated);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/mark-all-read', authenticateToken, async (req, res) => {
+  try {
+    const updated = await prisma.alert.updateMany({
+      where: { isRead: false },
+      data: { isRead: true }
+    });
+    res.json(updated);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

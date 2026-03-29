@@ -25,6 +25,19 @@ router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
   }
 });
 
+router.patch('/:id', authenticateToken, requireRole('admin'), async (req, res) => {
+  const { name, polygon, vehicleId } = req.body;
+  try {
+    const gf = await prisma.geofence.update({
+      where: { id: parseInt(req.params.id as string) },
+      data: { name, polygon, vehicleId }
+    });
+    res.json(gf);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.delete('/:id', authenticateToken, requireRole('admin'), async (req, res) => {
   try {
     await prisma.geofence.delete({ where: { id: parseInt(req.params.id as string) } });

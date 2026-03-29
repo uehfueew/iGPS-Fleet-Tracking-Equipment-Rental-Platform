@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, Fragment } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { ShieldAlert, Info, AlertTriangle, Bell, Search, CheckCircle2, AlertCircle, CheckCheck } from 'lucide-react';
+import { ShieldAlert, Info, AlertTriangle, Bell, CheckCircle2, AlertCircle, CheckCheck } from 'lucide-react';
 import api from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,7 +9,7 @@ const Alerts = () => {
  const token = authContext ? authContext.token : null;
  const [alerts, setAlerts] = useState<any[]>([]);
  const [loading, setLoading] = useState(true);
- const [searchTerm, setSearchTerm] = useState('');
+ const [filter, setFilter] = useState('all');
  const [showMarkAllModal, setShowMarkAllModal] = useState(false);
 
  useEffect(() => {
@@ -58,18 +58,18 @@ const Alerts = () => {
  setShowMarkAllModal(false);
  
  try {
- const unreadAlerts = original.filter(a => !a.isRead);
- await Promise.all(unreadAlerts.map(a => api.put(`/alerts/${a.id}/read`)));
+ await api.put(`/alerts/mark-all-read`);
  } catch (err) {
  console.error('Failed to update all alerts');
  setAlerts(original);
  }
  };
 
- const filteredAlerts = alerts.filter(a => 
- a.message?.toLowerCase().includes(searchTerm.toLowerCase()) || 
- (a.vehicle?.name?.toLowerCase().includes(searchTerm.toLowerCase()))
- );
+ const filteredAlerts = alerts.filter(a => {
+  if (filter === 'unread') return !a.isRead;
+  if (filter === 'read') return a.isRead;
+  return true;
+ });
 
  const unreadCount = alerts.filter(a => !a.isRead).length;
 
@@ -90,22 +90,15 @@ const Alerts = () => {
  </div>
  
  <div className="flex flex-col sm:flex-row gap-4">
- <div className="relative w-full sm:w-72">
- <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
- <Search className="h-5 w-5 text-gray-400" />
- </div>
- <input
- type="text"
- className="block w-full pl-11 pr-4 py-3 border border-gray-200 rounded-2xl leading-5 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
- placeholder="Search by vehicle or message..."
- value={searchTerm}
- onChange={(e) => setSearchTerm(e.target.value)}
- />
+ <div className="flex gap-1 bg-gray-100 p-1 rounded-xl h-fit">
+  <button onClick={() => setFilter('all')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'all' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>All</button>
+  <button onClick={() => setFilter('unread')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'unread' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Unread</button>
+  <button onClick={() => setFilter('read')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filter === 'read' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Read</button>
  </div>
  {unreadCount > 0 && (
  <button
  onClick={() => setShowMarkAllModal(true)}
- className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-2xl text-gray-700 font-semibold hover:bg-gray-50 :bg-gray-700 transition-colors shadow-sm"
+ className="flex items-center justify-center gap-2 px-5 py-2.5 h-fit whitespace-nowrap bg-white border border-gray-200 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 transition-colors shadow-sm"
  >
  <CheckCheck className="w-5 h-5" />
  Mark All Read

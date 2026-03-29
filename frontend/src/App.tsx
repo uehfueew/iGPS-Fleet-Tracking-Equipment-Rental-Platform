@@ -9,7 +9,6 @@ import VehicleHistory from './pages/VehicleHistory';
 import AdminGeofences from './pages/AdminGeofences';
 import Alerts from './pages/Alerts';
 import Dashboard from './pages/Dashboard';
-import Reports from './pages/Reports';
 import AdminGroups from './pages/AdminGroups';
 import AdminDrivers from './pages/AdminDrivers';
 
@@ -51,50 +50,50 @@ function App() {
           
           <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-1">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3">Overview</p>
-            <Link to="/dashboard" className={navLinkClass('/dashboard')}>
-              <BarChart3 className="h-4 w-4" /> Dashboard
-            </Link>
             <Link to="/" className={navLinkClass('/')}>
               <MapIcon className="h-4 w-4" /> Live Map
             </Link>
-            <Link to="/history" className={navLinkClass('/history')}>
-              <Activity className="h-4 w-4" /> Route History
-            </Link>
-            
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-3">Operations</p>
-            <Link to="/equipment" className={navLinkClass('/equipment')}>
-              <HardHat className="h-4 w-4" /> Equipment Rental
+            <Link to="/dashboard" className={navLinkClass('/dashboard')}>
+              <BarChart3 className="h-4 w-4" /> Dashboard
             </Link>
             <Link to="/alerts" className={navLinkClass('/alerts')}>
               <Bell className="h-4 w-4" /> Alerts
             </Link>
+            
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-3">Operations</p>
+            <Link to="/admin/vehicles" className={navLinkClass('/admin/vehicles')}>
+              <Car className="h-4 w-4" /> Fleet Vehicles
+            </Link>
+            <Link to="/admin/drivers" className={navLinkClass('/admin/drivers')}>
+              <UsersRound className="h-4 w-4" /> Drivers & Logs
+            </Link>
+            <Link to="/admin/routes" className={navLinkClass('/admin/routes')}>
+              <RouteIcon className="h-4 w-4" /> Routes & Stops
+            </Link>
+            <Link to="/history" className={navLinkClass('/history')}>
+              <Activity className="h-4 w-4" /> Route History
+            </Link>
+            <Link to="/equipment" className={navLinkClass('/equipment')}>
+              <HardHat className="h-4 w-4" /> Equipment Rental
+            </Link>
+            <Link to="/admin/rentals" className={navLinkClass('/admin/rentals')}>
+              <Calendar className="h-4 w-4" /> Manage Bookings
+            </Link>
 
             {user.role === 'admin' && (
               <>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-3">Admin Panel</p>
-                <Link to="/admin/company" className={navLinkClass('/admin/company')}>
-                  <Building className="h-4 w-4" /> Company Profile
-                </Link>
-                <Link to="/admin/vehicles" className={navLinkClass('/admin/vehicles')}>
-                  <Car className="h-4 w-4" /> Fleet Vehicles
-                </Link>
-                <Link to="/admin/rentals" className={navLinkClass('/admin/rentals')}>
-                  <Calendar className="h-4 w-4" /> Manage Bookings
-                </Link>
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-3">Administration</p>
                 <Link to="/admin/geofences" className={navLinkClass('/admin/geofences')}>
                   <Shield className="h-4 w-4" /> Setup Geofences
+                </Link>
+                <Link to="/admin/reports" className={navLinkClass('/admin/reports')}>
+                  <FileText className="h-4 w-4" /> Reports & Automation
                 </Link>
                 <Link to="/admin/groups" className={navLinkClass('/admin/groups')}>
                   <Users className="h-4 w-4" /> Groups & Subaccounts
                 </Link>
-                <Link to="/admin/drivers" className={navLinkClass('/admin/drivers')}>
-                  <UsersRound className="h-4 w-4" /> Drivers & Logs
-                </Link>
-                <Link to="/admin/routes" className={navLinkClass('/admin/routes')}>
-                  <RouteIcon className="h-4 w-4" /> Routes & Stops
-                </Link>
-                <Link to="/admin/reports" className={navLinkClass('/admin/reports')}>
-                  <FileText className="h-4 w-4" /> Reports & Automation
+                <Link to="/admin/company" className={navLinkClass('/admin/company')}>
+                  <Building className="h-4 w-4" /> Company Profile
                 </Link>
               </>
             )}
@@ -134,7 +133,6 @@ function App() {
             <Route path="/admin/routes" element={<AdminRoutes />} />
             <Route path="/admin/reports" element={<AutomatedReports />} />
             <Route path="/history" element={<VehicleHistory />} />
-            <Route path="/reports" element={<Reports />} />
             <Route path="/" element={<Map />} />
             <Route path="/equipment" element={<EquipmentList />} />
           </Route>

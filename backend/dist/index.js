@@ -26,6 +26,8 @@ const drivers_1 = __importDefault(require("./routes/drivers"));
 const fuel_1 = __importDefault(require("./routes/fuel"));
 const routes_api_1 = __importDefault(require("./routes/routes_api"));
 const automated_reports_1 = __importDefault(require("./routes/automated_reports"));
+const profile_1 = __importDefault(require("./routes/profile"));
+const webhooks_1 = __importDefault(require("./routes/webhooks"));
 const auth_2 = require("./middleware/auth");
 const geo_1 = require("./utils/geo");
 const zod_1 = require("zod");
@@ -44,6 +46,8 @@ const io = new socket_io_1.Server(httpServer, {
         methods: ['GET', 'POST']
     }
 });
+// Make io accessible inside express routes (like our webhooks)
+app.set('io', io);
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
     socket.on('disconnect', () => {
@@ -76,6 +80,8 @@ app.use('/api/drivers', drivers_1.default);
 app.use('/api/fuel', fuel_1.default);
 app.use('/api/routes_api', routes_api_1.default);
 app.use('/api/automated_reports', automated_reports_1.default);
+app.use('/api/profile', profile_1.default);
+app.use('/api/webhooks', webhooks_1.default);
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK' });
@@ -125,13 +131,40 @@ app.get('/api/vehicles', auth_2.authenticateToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-// ---- Position endpoints ----
-// Add a GPS position for a vehicle
-app.post('/api/positions', async (req, res) => {
-    const { vehicleId, latitude, longitude, speed } = req.body;
+// Update a vehicle (and link its tracker)
+app.put('/api/vehicles/:id', auth_2.authenticateToken, (0, auth_2.requireRole)('admin'), async (req, res) => {
     try {
-        const timestamp = new Date();
-        // Use tsPool for TimescaleDB
+        const { id } = req.params;
+        const validatedData = vehicleSchema.parse(req.body);
+        const vehicle = await db_1.prisma.vehicle.update({
+            where: { id: parseInt(id) },
+            data: validatedData,
+        });
+        res.json(vehicle);
+    }
+    catch (err) {
+        if (err instanceof zod_1.z.ZodError) {
+            return res.status(400).json({ error: err.errors });
+        }
+        res.status(500).json({ error: err.message });
+    }
+});
+// Delete a vehicle
+app.delete('/api/vehicles/:id', auth_2.authenticateToken, (0, auth_2.requireRole)('admin'), async (req, res) => {
+    try {
+        const { id } = req.params;
+        await db_1.prisma.vehicle.delete({
+            where: { id: parseInt(id) },
+        });
+        res.json({ success: true });
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+app.post('/api/positions', auth_2.authenticateToken, (0, auth_2.requireRole)('admin'), async (req, res) => {
+    try {
+        const { vehicleId, latitude, longitude, speed, timestamp } = req.body;
         const position = await db_1.prisma.position.create({
             data: { vehicleId, latitude, longitude, speed, timestamp }
         });

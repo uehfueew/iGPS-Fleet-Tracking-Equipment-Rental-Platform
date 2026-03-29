@@ -92,6 +92,8 @@ model Vehicle {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   groupId      Int?
+  routeId      Int?
+  route        Route?      @relation(fields: [routeId], references: [id])
   alerts       Alert[]
   driverLogs   DriverLog[]
   fuelLogs     FuelLog[]
@@ -190,14 +192,17 @@ model Route {
   startLocation Json?
   endLocation   Json?
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  displayOrder  Int @default(0)
+  updatedAt     DateTime    @updatedAt
   stops         Stop[]
+  vehicles      Vehicle[]
 }
 
 model Stop {
   id           Int       @id @default(autoincrement())
   routeId      Int
-  name         String
+  name          String
+  sequence      Int @default(0)
   location     Json
   assignedTime DateTime?
   route        Route     @relation(fields: [routeId], references: [id])

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '../components/Modal';
 import api from '../services/api';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Car, Plus, Trash2, Edit2, Search, AlertTriangle, 
   Activity, Cpu, Link, HelpCircle
@@ -11,10 +12,13 @@ interface Vehicle {
   name: string;
   licensePlate: string;
   deviceId?: string;
+  routeId?: number | null;
+  route?: { name: string };
 }
 
 export default function AdminVehicles() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [routes, setRoutes] = useState<{ id: number; name: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +35,17 @@ export default function AdminVehicles() {
 
   useEffect(() => {
     fetchVehicles();
+    fetchRoutes();
   }, []);
+
+  const fetchRoutes = async () => {
+    try {
+      const res = await api.get('/routes_api');
+      setRoutes(res.data);
+    } catch (err) {
+      console.error('Failed to load routes', err);
+    }
+  };
 
   const fetchVehicles = async () => {
     try {
@@ -207,35 +221,53 @@ export default function AdminVehicles() {
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      {vehicle.deviceId ? (
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          </span>
-                          <span className="text-sm font-medium text-slate-700 flex items-center gap-1.5">
-                            <Cpu className="h-4 w-4 text-slate-400" />
-                            {vehicle.deviceId}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <span className="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
-                          <span className="text-sm font-medium text-amber-600">No Tracker Linked</span>
-                        </div>
-                      )}
+                      <div className="flex flex-col gap-2">
+                        {vehicle.deviceId ? (
+                          <div className="flex items-center gap-2">
+                            <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 relative">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            </span>
+                            <span className="text-sm font-medium text-slate-700 flex items-center gap-1.5">
+                              <Cpu className="h-4 w-4 text-slate-400" />
+                              {vehicle.deviceId}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <span className="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
+                            <span className="text-sm font-medium text-amber-600">No Tracker Linked</span>
+                          </div>
+                        )}
+                        {vehicle.route && (
+                          <div className="text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-1 rounded inline-flex self-start items-center gap-1">
+                            <Link className="h-3 w-3" />
+                            Route: {vehicle.route.name}
+                          </div>
+                        )}
+                      </div>
                     </td>
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <RouterLink
+                          to={`/history`}
+                          state={{ vehicleId: vehicle.id }}
+                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent hover:border-blue-100 flex items-center gap-1.5"
+                          title="View Route History"
+                        >
+                          <Activity className="h-4 w-4" />
+                          <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline-block">History</span>
+                        </RouterLink>
+                        <div className="w-px h-6 bg-slate-200 mx-1"></div>
                         <button
                           onClick={() => openEditModal(vehicle)}
-                          className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                          className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors border border-transparent hover:border-slate-200"
                           title="Edit Vehicle"
                         >
                           <Edit2 className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => openDeleteModal(vehicle)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
                           title="Delete Vehicle"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -321,9 +353,28 @@ export default function AdminVehicles() {
                   onChange={e => setCurrentVehicle({ ...currentVehicle, deviceId: e.target.value })}
                 />
               </div>
-              <p className="text-xs text-slate-500 mt-2">
+              <p className="text-xs text-slate-500 mt-2 mb-4">
                 Leave this blank if you are simply registering asset details without a live GPS tracker.
               </p>
+              
+              <div className="pt-2">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Assigned Route (Optional)</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <Link className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <select
+                    className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-0 focus:border-slate-900 transition-colors bg-white font-medium text-slate-700 appearance-none"
+                    value={currentVehicle.routeId || ''}
+                    onChange={e => setCurrentVehicle({ ...currentVehicle, routeId: e.target.value ? parseInt(e.target.value) : null })}
+                  >
+                    <option value="">No Route Assigned</option>
+                    {routes.map(r => (
+                      <option key={r.id} value={r.id}>{r.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import api from '../services/api';
 import L from 'leaflet';
@@ -34,8 +35,11 @@ const VehicleHistory = () => {
   const polylineRef = useRef<L.Polyline | null>(null);
 
   const { token } = useContext(AuthContext);
+  const location = useLocation();
+  const stateVehicleId = location.state?.vehicleId || '';
+  
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [selectedVehicle, setSelectedVehicle] = useState<number | ''>('');
+  const [selectedVehicle, setSelectedVehicle] = useState<number | ''>(stateVehicleId);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [vehicleSearch, setVehicleSearch] = useState('');
   const [fromDate, setFromDate] = useState('');

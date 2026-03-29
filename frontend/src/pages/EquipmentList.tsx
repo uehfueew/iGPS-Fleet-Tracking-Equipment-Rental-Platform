@@ -380,17 +380,17 @@ const EquipmentList = () => {
  </div>
  )}
 
- <form onSubmit={handleAddEquipment} className="space-y-5">
+ <form onSubmit={handleAddEquipment} className="space-y-6">
  
- <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Name / Model</label> 
-     <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+   <div className="space-y-2">
+     <label className="text-sm font-semibold text-gray-700">Vehicle Name / Model</label> 
+     <input type="text" required value={newEqName} onChange={e => setNewEqName(e.target.value)} placeholder="e.g. Ford F-150 Truck" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
    </div>
    
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Type</label> 
-     <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-white">
+   <div className="space-y-2">
+     <label className="text-sm font-semibold text-gray-700">Vehicle Type</label> 
+     <select required value={newEqType} onChange={e => setNewEqType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm">
        <option value="Car">Standard Car</option>
        <option value="Truck">Moving Truck / Pickup</option>
        <option value="Van">Van</option>
@@ -400,61 +400,60 @@ const EquipmentList = () => {
    </div>
  </div>
 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">License Plate / ID</label> 
-     <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="e.g. ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+   <div className="space-y-2">
+     <label className="text-sm font-semibold text-gray-700">License Plate / ID</label> 
+     <input type="text" value={newEqPlate} onChange={e => setNewEqPlate(e.target.value)} placeholder="e.g. ABC-1234" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium uppercase shadow-sm" />
    </div>
    
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Vehicle Year</label> 
-     <input type="number" min="1950" max={new Date().getFullYear() + 1} value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="e.g. 2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   <div className="space-y-2">
+     <label className="text-sm font-semibold text-gray-700">Vehicle Year</label> 
+     <input type="number" min="1950" max={new Date().getFullYear() + 1} value={newEqYear} onChange={e => setNewEqYear(e.target.value)} placeholder="e.g. 2022" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
    </div>
  </div>
 
- <div className="grid grid-cols-1 gap-5">
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Owner / Lender Name</label> 
-     <input type="text" value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="e.g. John Doe Rentals" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-   </div>
+ <div className="space-y-2">
+   <label className="text-sm font-semibold text-gray-700">Owner / Lender Name</label> 
+   <input type="text" value={newEqOwner} onChange={e => setNewEqOwner(e.target.value)} placeholder="e.g. John Doe Rentals" className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
  </div>
 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Available From</label> 
-     <input type="date" value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-   </div>
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Available Until</label> 
-     <input type="date" min={newEqAvailableFrom} value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-   </div>
- </div>
-
- <div className="grid grid-cols-1 gap-5">
-   <div>
-     <label className="text-sm font-semibold text-gray-700 block mb-2">Daily Rental Rate</label>
-     <div className="flex gap-2">
-       <select value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-1/3 px-3 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-white">
-         <option value="USD">USD ($)</option>
-         <option value="EUR">EUR (€)</option>
-         <option value="GBP">GBP (£)</option>
-         <option value="CAD">CAD ($)</option>
-       </select>
-       <input type="number" required min="1" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="50" className="w-2/3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+ <div className="p-5 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-4">
+   <h4 className="text-sm font-bold text-blue-900 mb-2 border-b border-blue-100 pb-2">Availability Schedule</h4>
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+     <div className="space-y-2">
+       <label className="text-xs font-semibold text-blue-800 uppercase tracking-wide">Available From</label> 
+       <input type="date" value={newEqAvailableFrom} onChange={e => setNewEqAvailableFrom(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
+     </div>
+     <div className="space-y-2">
+       <label className="text-xs font-semibold text-blue-800 uppercase tracking-wide">Available Until</label> 
+       <input type="date" min={newEqAvailableFrom} value={newEqAvailableUntil} onChange={e => setNewEqAvailableUntil(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-blue-200 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm" />
      </div>
    </div>
  </div>
 
- <div>
- <label className="text-sm font-semibold text-gray-700 block mb-2">Additional Description</label>
- <textarea required value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Mileage, conditions, capacity..." className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" rows={3}></textarea>       
+ <div className="space-y-2">
+   <label className="text-sm font-semibold text-gray-700">Daily Rental Rate</label>
+   <div className="flex gap-3">
+     <select value={newEqCurrency} onChange={e => setNewEqCurrency(e.target.value)} className="w-1/3 px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm">
+       <option value="USD">USD ($)</option>
+       <option value="EUR">EUR (€)</option>
+       <option value="GBP">GBP (£)</option>
+       <option value="CAD">CAD ($)</option>
+     </select>
+     <input type="number" required min="1" value={newEqPrice} onChange={e => setNewEqPrice(e.target.value)} placeholder="50" className="w-2/3 px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm text-lg" />
+   </div>
  </div>
 
- <div className="flex justify-end gap-3 pt-4 mt-2 border-t border-gray-100">    
- <button type="button" onClick={closeModals} className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-colors">Cancel</button>
- <button type="submit" className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-md transform hover:-translate-y-0.5 transition-transform flex items-center gap-2">
-   <Check className="w-5 h-5"/> Add to Fleet
- </button>
+ <div className="space-y-2">
+   <label className="text-sm font-semibold text-gray-700">Additional Description</label>
+   <textarea required value={newEqDesc} onChange={e => setNewEqDesc(e.target.value)} placeholder="Mileage, conditions, capacity..." className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 transition-all font-medium shadow-sm resize-none" rows={3}></textarea>       
+ </div>
+
+ <div className="flex justify-end gap-3 pt-6 mt-4 border-t border-gray-100">    
+   <button type="button" onClick={closeModals} className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-colors">Cancel</button>
+   <button type="submit" className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-md transform hover:-translate-y-0.5 transition-transform flex items-center gap-2">
+     <Check className="w-5 h-5"/> Add to Fleet
+   </button>
  </div>
  </form>
  </div>

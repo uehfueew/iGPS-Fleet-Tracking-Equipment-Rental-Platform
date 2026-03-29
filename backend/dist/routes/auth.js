@@ -11,7 +11,7 @@ const auth_1 = require("../middleware/auth");
 const router = express_1.default.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'g3r1n0-pl4tf0rm-s3cr3t';
 router.post('/register', async (req, res) => {
-    const { username, password, role } = req.body;
+    const { username, password, role, companyDetails } = req.body;
     try {
         const existingUser = await db_1.prisma.user.findUnique({ where: { username } });
         if (existingUser) {
@@ -26,6 +26,17 @@ router.post('/register', async (req, res) => {
                 role: userRole,
             },
         });
+        if (userRole === 'admin' && companyDetails?.name) {
+            await db_1.prisma.companyProfile.create({
+                data: {
+                    userId: user.id,
+                    name: companyDetails.name,
+                    locations: companyDetails.locations || '',
+                    phoneNumber: companyDetails.phoneNumber || '',
+                    description: companyDetails.description || '',
+                }
+            });
+        }
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
         res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
     }
